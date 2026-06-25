@@ -17,3 +17,11 @@ npm-debug.log*
 
 # OS / editor
 .DS_Store
+
+# Service Account keys (NEVER commit)
+*.json
+!package.json
+!tsconfig.json
+!vercel.json
+!package-lock.json
+!vitest.config.json
