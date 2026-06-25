@@ -73,13 +73,30 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (pending roadmap) | — | Pending |
+| GSC-01 | Phase 1 | Pending |
+| GSC-02 | Phase 1 | Pending |
+| CMD-03 | Phase 1 | Pending |
+| CMD-05 | Phase 1 | Pending |
+| PER-01 | Phase 1 | Pending |
+| SCH-03 | Phase 1 | Pending |
+| CMD-01 | Phase 2 | Pending |
+| CMD-02 | Phase 2 | Pending |
+| CMD-04 | Phase 2 | Pending |
+| GSC-03 | Phase 3 | Pending |
+| GSC-04 | Phase 3 | Pending |
+| RPT-01 | Phase 3 | Pending |
+| RPT-04 | Phase 3 | Pending |
+| RPT-02 | Phase 4 | Pending |
+| RPT-03 | Phase 4 | Pending |
+| PER-02 | Phase 4 | Pending |
+| SCH-01 | Phase 4 | Pending |
+| SCH-02 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 19 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 19 ⚠️
+- v1 requirements: 18 enumerated (note: prior header said "19 total" — the enumerated list contains 18 distinct IDs; corrected here)
+- Mapped to phases: 18 ✓
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-25*
-*Last updated: 2026-06-25 after initial definition*
+*Last updated: 2026-06-25 after roadmap creation (traceability mapped)*
