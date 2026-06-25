@@ -23,10 +23,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Slack Commands
 
-- [ ] **CMD-01**: `/add <cliente>` agrega una propiedad GSC a la lista de clientes activos del reporte
-- [ ] **CMD-02**: `/remove <cliente>` quita una propiedad de la lista de clientes activos
+- [x] **CMD-01**: `/add <cliente>` agrega una propiedad GSC a la lista de clientes activos del reporte
+- [x] **CMD-02**: `/remove <cliente>` quita una propiedad de la lista de clientes activos
 - [ ] **CMD-03**: `/list` lista las propiedades disponibles en la cuenta de GSC
-- [ ] **CMD-04**: Los comandos validan la entrada y responden con mensajes de error claros (propiedad inexistente, ya agregada, etc.)
+- [x] **CMD-04**: Los comandos validan la entrada y responden con mensajes de error claros (propiedad inexistente, ya agregada, etc.)
 - [x] **CMD-05**: El endpoint de comandos verifica la firma HMAC de Slack sobre el body crudo antes de procesar
 
 ### Persistence
@@ -79,9 +79,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CMD-05 | Phase 1 | Complete |
 | PER-01 | Phase 1 | Complete |
 | SCH-03 | Phase 1 | Complete |
-| CMD-01 | Phase 2 | Pending |
-| CMD-02 | Phase 2 | Pending |
-| CMD-04 | Phase 2 | Pending |
+| CMD-01 | Phase 2 | Complete |
+| CMD-02 | Phase 2 | Complete |
+| CMD-04 | Phase 2 | Complete |
 | GSC-03 | Phase 3 | Pending |
 | GSC-04 | Phase 3 | Pending |
 | RPT-01 | Phase 3 | Pending |

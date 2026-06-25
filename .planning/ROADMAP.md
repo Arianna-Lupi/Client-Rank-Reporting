@@ -14,7 +14,7 @@ The bot is built bottom-up as four vertical slices that match the dependency gra
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundations + GSC Auth + `/list` Slice** - Deployed, signature-verified Slack endpoint that lists GSC properties via Service Account auth, with the active-client list persisted in Redis
-- [ ] **Phase 2: Client Management** - `/add` and `/remove` manage the active-client list with validation against `sites.list` and clear errors
+- [x] **Phase 2: Client Management** - `/add` and `/remove` manage the active-client list with validation against `sites.list` and clear errors (completed 2026-06-25)
 - [ ] **Phase 3: GSC Metrics + Delta Computation** - Last-available-day resolution and per-metric % deltas (position inverted) with safe no-data handling
 - [ ] **Phase 4: Block Kit Report + Daily Cron** - One Block Kit message per client posted automatically each morning, idempotent and tz-correct, on a secured cron
 
@@ -62,7 +62,7 @@ Plans:
 
 - [x] 02-01-PLAN.md — Fundamento: site-match (normalizeSiteRef + resolveSiteRef) + clients add/remove con tests (wave 1)
 - [x] 02-02-PLAN.md — Handlers de comando: lib/commands/add.ts + remove.ts con tests (wave 2)
-- [ ] 02-03-PLAN.md — Dispatcher: mover /list a lib/commands/list.ts + router + refactor del shell api/slack/command.ts (wave 3)
+- [x] 02-03-PLAN.md — Dispatcher: mover /list a lib/commands/list.ts + router + refactor del shell api/slack/command.ts (wave 3)
 
 ### Phase 3: GSC Metrics + Delta Computation
 
@@ -111,6 +111,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
-| 2. Client Management | 2/3 | In Progress|  |
+| 2. Client Management | 3/3 | Complete   | 2026-06-25 |
 | 3. GSC Metrics + Delta Computation | 0/TBD | Not started | - |
 | 4. Block Kit Report + Daily Cron | 0/TBD | Not started | - |
