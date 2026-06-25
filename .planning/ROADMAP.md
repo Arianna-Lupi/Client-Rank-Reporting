@@ -61,7 +61,7 @@ Plans:
 Plans:
 
 - [x] 02-01-PLAN.md — Fundamento: site-match (normalizeSiteRef + resolveSiteRef) + clients add/remove con tests (wave 1)
-- [ ] 02-02-PLAN.md — Handlers de comando: lib/commands/add.ts + remove.ts con tests (wave 2)
+- [x] 02-02-PLAN.md — Handlers de comando: lib/commands/add.ts + remove.ts con tests (wave 2)
 - [ ] 02-03-PLAN.md — Dispatcher: mover /list a lib/commands/list.ts + router + refactor del shell api/slack/command.ts (wave 3)
 
 ### Phase 3: GSC Metrics + Delta Computation
@@ -111,6 +111,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
-| 2. Client Management | 1/3 | In Progress|  |
+| 2. Client Management | 2/3 | In Progress|  |
 | 3. GSC Metrics + Delta Computation | 0/TBD | Not started | - |
 | 4. Block Kit Report + Daily Cron | 0/TBD | Not started | - |
