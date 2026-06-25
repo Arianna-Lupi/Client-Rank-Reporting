@@ -39,7 +39,9 @@ Plans:
 
 - [x] 01-01-PLAN.md — Provisioning (Slack App, GCP SA, Upstash) + scaffold TS/Vercel + lib/config.ts + npm install gate
 - [x] 01-02-PLAN.md — Servicios compartidos con tests: verify.ts (HMAC), gsc.ts (sites.list + filtro), clients.ts (read Redis)
-- [ ] 01-03-PLAN.md — Handler /list + deploy a preview + seed Redis + verificación end-to-end
+- [~] 01-03-PLAN.md — Handler /list + deploy a preview + seed Redis + verificación end-to-end
+  - [x] Task 1 — `api/slack/command.ts` (handler /list) + README (committed 7f8da87, typecheck + tests pasan)
+  - [ ] Task 2 — Deploy a preview de Vercel + seed `clients:active` + e2e de /list (checkpoint:human-verify, BLOQUEADO: faltan Slack signing secret, Upstash REST URL/token y la SA concedida en una propiedad GSC)
 
 ### Phase 2: Client Management
 
@@ -106,7 +108,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundations + GSC Auth + `/list` Slice | 2/3 | In Progress|  |
+| 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
 | 2. Client Management | 0/TBD | Not started | - |
 | 3. GSC Metrics + Delta Computation | 0/TBD | Not started | - |
 | 4. Block Kit Report + Daily Cron | 0/TBD | Not started | - |

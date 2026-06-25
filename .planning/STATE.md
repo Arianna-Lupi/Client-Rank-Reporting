@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-06-25T15:54:20.972Z"
+stopped_at: "01-03 Task 1 complete (handler + README); Task 2 (deploy/e2e) awaiting human"
+last_updated: "2026-06-25T15:58:51Z"
 last_activity: 2026-06-25
 progress:
   total_phases: 4
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-06-25)
 ## Current Position
 
 Phase: 01 (Foundations + GSC Auth + /list Slice) — EXECUTING
-Plan: 3 of 3
-Status: Ready to execute
+Plan: 3 of 3 — IN PROGRESS (paused at checkpoint)
+Status: Task 1 done (api/slack/command.ts + README committed 7f8da87). Task 2 (deploy a preview de Vercel + seed Redis + verificación e2e de /list) es un checkpoint:human-verify BLOQUEADO esperando provisión humana (Slack signing secret, Upstash REST URL/token, y la SA concedida en al menos una propiedad GSC). No se puede automatizar el deploy ni el e2e sin esas credenciales.
 Last activity: 2026-06-25
 
 Progress: [░░░░░░░░░░] 0%
@@ -78,7 +78,7 @@ None yet.
 - Vercel plan (Hobby vs Pro) affects cron precision — Hobby allows ~1 cron/day with ~1h imprecision; confirm before Phase 4 scheduling.
 - Exact GSC `googleapis` method/scope names (`searchconsole` vs `webmasters` v1) and `dataState` behavior were MEDIUM confidence — verify against installed package types early in Phase 3.
 - Bolt receiver vs raw Vercel handler — resolve in a Phase 1 spike (affects 3s-ack + signature wiring).
-- GSC SA email not yet granted on any GSC property (sites.list returns 0); Slack + Upstash creds still blank in .env.local — all required before Plan 03 preview deploy
+- GSC SA email not yet granted on any GSC property (sites.list returns 0); Slack + Upstash creds still blank in .env.local — all required before Plan 03 preview deploy. **BLOCKING Plan 01-03 Task 2** (deploy + e2e verification of /list). The handler code (Task 1) is written, typechecked and committed; only the live deploy/seed/e2e remains, and it cannot proceed until these creds exist and the SA is granted on a property.
 
 ## Deferred Items
 
@@ -90,6 +90,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-25T15:54:20.969Z
-Stopped at: Completed 01-02-PLAN.md
-Resume file: None
+Last session: 2026-06-25T15:58:51Z
+Stopped at: 01-03 Task 1 complete; paused at Task 2 checkpoint (deploy/e2e) awaiting human creds
+Resume file: .planning/phases/01-foundations-gsc-auth-list-slice/01-03-PLAN.md (resume at Task 2)
