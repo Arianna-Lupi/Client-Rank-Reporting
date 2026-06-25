@@ -64,3 +64,46 @@ export function resolveComparablePair(
   const previous = sorted[sorted.length - 2]!;
   return { status: 'ok', current, previous };
 }
+
+/** Round to 1 decimal place (Math.round handles the .05 / -0 fixture cases). */
+function round1(x: number): number {
+  return Math.round(x * 10) / 10;
+}
+
+/**
+ * Build one MetricDelta. `higherIsBetter` is true for clicks/impressions/ctr and
+ * false for position (lower rank is better). previousVal === 0 is the
+ * divide-by-zero guard: deltaPct null + isNew true instead of Infinity/NaN.
+ */
+function delta(currentVal: number, previousVal: number, higherIsBetter: boolean): MetricDelta {
+  if (previousVal === 0) {
+    return {
+      value: currentVal,
+      previous: previousVal,
+      deltaPct: null,
+      improved: higherIsBetter ? currentVal > previousVal : currentVal < previousVal,
+      isNew: true,
+    };
+  }
+  return {
+    value: currentVal,
+    previous: previousVal,
+    deltaPct: round1(((currentVal - previousVal) / previousVal) * 100),
+    improved: higherIsBetter ? currentVal > previousVal : currentVal < previousVal,
+    isNew: false,
+  };
+}
+
+/**
+ * Per-metric signed % deltas (RPT-01). clicks/impressions/ctr are higher-is-better;
+ * position is INVERTED (improved = current < previous). Pure — sets the boolean +
+ * signed pct that Phase 4 (RPT-02) renders; this plan renders nothing.
+ */
+export function computeDeltas(current: DailyMetricRow, previous: DailyMetricRow): MetricDeltas {
+  return {
+    clicks: delta(current.clicks, previous.clicks, true),
+    impressions: delta(current.impressions, previous.impressions, true),
+    ctr: delta(current.ctr, previous.ctr, true),
+    position: delta(current.position, previous.position, false),
+  };
+}
