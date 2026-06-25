@@ -56,11 +56,13 @@ Plans:
   3. Invalid input (nonexistent property, already added, not in the list) returns a clear error message instead of failing silently
   4. The value persisted to Redis is the canonical `siteUrl` returned by `sites.list`, not free-form user text
 
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 
-- [ ] 02-01: TBD
+- [x] 02-01-PLAN.md — Fundamento: site-match (normalizeSiteRef + resolveSiteRef) + clients add/remove con tests (wave 1)
+- [ ] 02-02-PLAN.md — Handlers de comando: lib/commands/add.ts + remove.ts con tests (wave 2)
+- [ ] 02-03-PLAN.md — Dispatcher: mover /list a lib/commands/list.ts + router + refactor del shell api/slack/command.ts (wave 3)
 
 ### Phase 3: GSC Metrics + Delta Computation
 
@@ -109,6 +111,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
-| 2. Client Management | 0/TBD | Not started | - |
+| 2. Client Management | 1/3 | In Progress|  |
 | 3. GSC Metrics + Delta Computation | 0/TBD | Not started | - |
 | 4. Block Kit Report + Daily Cron | 0/TBD | Not started | - |

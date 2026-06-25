@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "01-03 Task 1 complete (handler + README); Task 2 (deploy/e2e) awaiting human"
-last_updated: "2026-06-25T15:58:51Z"
+stopped_at: 01-03 Task 1 complete; paused at Task 2 checkpoint (deploy/e2e) awaiting human creds
+last_updated: "2026-06-25T16:43:47.600Z"
 last_activity: 2026-06-25
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 3
-  completed_plans: 2
+  total_plans: 6
+  completed_plans: 3
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-25)
 
 **Core value:** Cada mañana el equipo ve, sin entrar a GSC, cómo se movió cada cliente día contra día directamente en Slack.
-**Current focus:** Phase 01 — Foundations + GSC Auth + /list Slice
+**Current focus:** Phase 02 — Client Management
 
 ## Current Position
 
-Phase: 01 (Foundations + GSC Auth + /list Slice) — EXECUTING
-Plan: 3 of 3 — IN PROGRESS (paused at checkpoint)
-Status: Task 1 done (api/slack/command.ts + README committed 7f8da87). Task 2 (deploy a preview de Vercel + seed Redis + verificación e2e de /list) es un checkpoint:human-verify BLOQUEADO esperando provisión humana (Slack signing secret, Upstash REST URL/token, y la SA concedida en al menos una propiedad GSC). No se puede automatizar el deploy ni el e2e sin esas credenciales.
+Phase: 02 (Client Management) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-06-25
 
 Progress: [░░░░░░░░░░] 0%
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01 P01 | 25 | 3 tasks | 9 files |
 | Phase 01 P02 | 12 | 2 tasks | 5 files |
+| Phase 02 P01 | 6 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-06-25T15:58:51Z
+Last session: 2026-06-25T16:43:47.596Z
 Stopped at: 01-03 Task 1 complete; paused at Task 2 checkpoint (deploy/e2e) awaiting human creds
-Resume file: .planning/phases/01-foundations-gsc-auth-list-slice/01-03-PLAN.md (resume at Task 2)
+Resume file: None
