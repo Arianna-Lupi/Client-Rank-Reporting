@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Roadmap and STATE created; ready to plan Phase 1
-last_updated: "2026-06-25T15:47:53.942Z"
+last_updated: "2026-06-25T15:48:10.286Z"
 last_activity: 2026-06-25
 progress:
   total_phases: 4
@@ -65,6 +65,8 @@ Recent decisions affecting current work:
 - Service Account auth for GSC (unattended daily runs); base64-encode the whole SA JSON to avoid newline breakage on Vercel
 - Compare last available day vs previous (absorb 2-3 day GSC lag)
 - Upstash Redis for the active-client list (Vercel KV deprecated)
+- [Phase ?]: Pinned TypeScript to 5.x (not 6.x) for @vercel/node compatibility; vitest@^3.2.0
+- [Phase ?]: lib/config.ts getConfig() is the single fail-fast entry for sensitive env config (SCH-03)
 
 ### Pending Todos
 
@@ -75,6 +77,7 @@ None yet.
 - Vercel plan (Hobby vs Pro) affects cron precision — Hobby allows ~1 cron/day with ~1h imprecision; confirm before Phase 4 scheduling.
 - Exact GSC `googleapis` method/scope names (`searchconsole` vs `webmasters` v1) and `dataState` behavior were MEDIUM confidence — verify against installed package types early in Phase 3.
 - Bolt receiver vs raw Vercel handler — resolve in a Phase 1 spike (affects 3s-ack + signature wiring).
+- GSC SA email not yet granted on any GSC property (sites.list returns 0); Slack + Upstash creds still blank in .env.local — all required before Plan 03 preview deploy
 
 ## Deferred Items
 
