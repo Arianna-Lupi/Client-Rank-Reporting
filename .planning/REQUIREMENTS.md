@@ -9,8 +9,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### GSC Integration
 
-- [ ] **GSC-01**: El bot se autentica a Google Search Console con una Service Account (credenciales JSON en env como base64) sin intervención manual
-- [ ] **GSC-02**: El bot lista las propiedades disponibles vía `sites.list`, filtrando las que la Service Account no puede leer (`siteUnverifiedUser`)
+- [x] **GSC-01**: El bot se autentica a Google Search Console con una Service Account (credenciales JSON en env como base64) sin intervención manual
+- [x] **GSC-02**: El bot lista las propiedades disponibles vía `sites.list`, filtrando las que la Service Account no puede leer (`siteUnverifiedUser`)
 - [ ] **GSC-03**: El bot consulta Search Analytics y obtiene impresiones, clics, CTR y posición media de una propiedad para un rango de fechas
 - [ ] **GSC-04**: El bot resuelve el "último día con datos disponibles" consultando una ventana móvil (no usa una fecha fija) para absorber el lag de 2-3 días de GSC
 
@@ -27,11 +27,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **CMD-02**: `/remove <cliente>` quita una propiedad de la lista de clientes activos
 - [ ] **CMD-03**: `/list` lista las propiedades disponibles en la cuenta de GSC
 - [ ] **CMD-04**: Los comandos validan la entrada y responden con mensajes de error claros (propiedad inexistente, ya agregada, etc.)
-- [ ] **CMD-05**: El endpoint de comandos verifica la firma HMAC de Slack sobre el body crudo antes de procesar
+- [x] **CMD-05**: El endpoint de comandos verifica la firma HMAC de Slack sobre el body crudo antes de procesar
 
 ### Persistence
 
-- [ ] **PER-01**: La lista de clientes activos persiste en Redis (Upstash) entre invocaciones serverless
+- [x] **PER-01**: La lista de clientes activos persiste en Redis (Upstash) entre invocaciones serverless
 - [ ] **PER-02**: El bot evita publicar el reporte diario duplicado ante reintentos/reinvocaciones (clave de idempotencia con TTL)
 
 ### Scheduling & Infra
@@ -73,11 +73,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| GSC-01 | Phase 1 | Pending |
-| GSC-02 | Phase 1 | Pending |
+| GSC-01 | Phase 1 | Complete |
+| GSC-02 | Phase 1 | Complete |
 | CMD-03 | Phase 1 | Pending |
-| CMD-05 | Phase 1 | Pending |
-| PER-01 | Phase 1 | Pending |
+| CMD-05 | Phase 1 | Complete |
+| PER-01 | Phase 1 | Complete |
 | SCH-03 | Phase 1 | Complete |
 | CMD-01 | Phase 2 | Pending |
 | CMD-02 | Phase 2 | Pending |

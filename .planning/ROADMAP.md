@@ -38,7 +38,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 
 - [x] 01-01-PLAN.md — Provisioning (Slack App, GCP SA, Upstash) + scaffold TS/Vercel + lib/config.ts + npm install gate
-- [ ] 01-02-PLAN.md — Servicios compartidos con tests: verify.ts (HMAC), gsc.ts (sites.list + filtro), clients.ts (read Redis)
+- [x] 01-02-PLAN.md — Servicios compartidos con tests: verify.ts (HMAC), gsc.ts (sites.list + filtro), clients.ts (read Redis)
 - [ ] 01-03-PLAN.md — Handler /list + deploy a preview + seed Redis + verificación end-to-end
 
 ### Phase 2: Client Management
@@ -106,7 +106,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundations + GSC Auth + `/list` Slice | 1/3 | In Progress|  |
+| 1. Foundations + GSC Auth + `/list` Slice | 2/3 | In Progress|  |
 | 2. Client Management | 0/TBD | Not started | - |
 | 3. GSC Metrics + Delta Computation | 0/TBD | Not started | - |
 | 4. Block Kit Report + Daily Cron | 0/TBD | Not started | - |
