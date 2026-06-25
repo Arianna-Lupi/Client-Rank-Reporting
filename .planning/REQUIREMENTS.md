@@ -38,7 +38,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **SCH-01**: Un cron de Vercel dispara el reporte diario y publica a las 9:00 AM en la zona horaria configurada (`REPORT_TZ`), manejando que Vercel Cron corre en UTC
 - [ ] **SCH-02**: El endpoint del cron está protegido (`CRON_SECRET`) para que no se pueda disparar externamente
-- [ ] **SCH-03**: La configuración sensible (Service Account, tokens de Slack, canal destino, zona horaria) se maneja por variables de entorno
+- [x] **SCH-03**: La configuración sensible (Service Account, tokens de Slack, canal destino, zona horaria) se maneja por variables de entorno
 
 ## v2 Requirements
 
@@ -78,7 +78,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CMD-03 | Phase 1 | Pending |
 | CMD-05 | Phase 1 | Pending |
 | PER-01 | Phase 1 | Pending |
-| SCH-03 | Phase 1 | Pending |
+| SCH-03 | Phase 1 | Complete |
 | CMD-01 | Phase 2 | Pending |
 | CMD-02 | Phase 2 | Pending |
 | CMD-04 | Phase 2 | Pending |
@@ -93,6 +93,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCH-02 | Phase 4 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 18 enumerated (note: prior header said "19 total" — the enumerated list contains 18 distinct IDs; corrected here)
 - Mapped to phases: 18 ✓
 - Unmapped: 0 ✓
