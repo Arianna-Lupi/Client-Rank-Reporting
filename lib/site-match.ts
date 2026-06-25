@@ -54,7 +54,7 @@ export function resolveSiteRef(
   const target = normalizeSiteRef(input);
   const matches = candidates.filter((c) => normalizeSiteRef(c) === target);
   if (matches.length === 1) {
-    return { kind: 'match', siteUrl: matches[0] };
+    return { kind: 'match', siteUrl: matches[0]! };
   }
   if (matches.length > 1) {
     return { kind: 'multiple', candidates: matches };
