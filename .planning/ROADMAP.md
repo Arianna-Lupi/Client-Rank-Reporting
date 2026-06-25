@@ -82,7 +82,7 @@ Plans:
 Plans:
 
 - [x] 03-01-PLAN.md — Pure delta core: DailyMetricRow type + resolveComparablePair (GSC-04) + computeDeltas (RPT-01) with unit tests (wave 1)
-- [ ] 03-02-PLAN.md — lib/gsc.ts fetchDailyMetrics over a trailing window (GSC-03), injectable query, unit-tested with a mock (wave 2)
+- [x] 03-02-PLAN.md — lib/gsc.ts fetchDailyMetrics over a trailing window (GSC-03), injectable query, unit-tested with a mock (wave 2)
 - [ ] 03-03-PLAN.md — lib/report.ts getClientReport discriminated union + safe no-data/error handling (RPT-04), injected fetcher (wave 3)
 
 ### Phase 4: Block Kit Report + Daily Cron
