@@ -11,15 +11,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **GSC-01**: El bot se autentica a Google Search Console con una Service Account (credenciales JSON en env como base64) sin intervención manual
 - [x] **GSC-02**: El bot lista las propiedades disponibles vía `sites.list`, filtrando las que la Service Account no puede leer (`siteUnverifiedUser`)
-- [ ] **GSC-03**: El bot consulta Search Analytics y obtiene impresiones, clics, CTR y posición media de una propiedad para un rango de fechas
-- [ ] **GSC-04**: El bot resuelve el "último día con datos disponibles" consultando una ventana móvil (no usa una fecha fija) para absorber el lag de 2-3 días de GSC
+- [x] **GSC-03**: El bot consulta Search Analytics y obtiene impresiones, clics, CTR y posición media de una propiedad para un rango de fechas
+- [x] **GSC-04**: El bot resuelve el "último día con datos disponibles" consultando una ventana móvil (no usa una fecha fija) para absorber el lag de 2-3 días de GSC
 
 ### Reporting
 
-- [ ] **RPT-01**: Para cada métrica el bot calcula el % de variación del último día disponible vs el día previo comparable
+- [x] **RPT-01**: Para cada métrica el bot calcula el % de variación del último día disponible vs el día previo comparable
 - [ ] **RPT-02**: El reporte muestra la dirección de la variación con indicador visual (flecha/emoji), invirtiendo el criterio para posición media (menor = mejor)
 - [ ] **RPT-03**: El reporte se publica como un mensaje por cliente en el canal, formateado con Block Kit (impresiones, clics, CTR, posición + sus deltas)
-- [ ] **RPT-04**: El reporte maneja casos sin datos / propiedad nueva / datos parciales sin romper (mensaje claro en vez de error)
+- [x] **RPT-04**: El reporte maneja casos sin datos / propiedad nueva / datos parciales sin romper (mensaje claro en vez de error)
 
 ### Slack Commands
 
@@ -82,10 +82,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CMD-01 | Phase 2 | Complete |
 | CMD-02 | Phase 2 | Complete |
 | CMD-04 | Phase 2 | Complete |
-| GSC-03 | Phase 3 | Pending |
-| GSC-04 | Phase 3 | Pending |
-| RPT-01 | Phase 3 | Pending |
-| RPT-04 | Phase 3 | Pending |
+| GSC-03 | Phase 3 | Complete |
+| GSC-04 | Phase 3 | Complete |
+| RPT-01 | Phase 3 | Complete |
+| RPT-04 | Phase 3 | Complete |
 | RPT-02 | Phase 4 | Pending |
 | RPT-03 | Phase 4 | Pending |
 | PER-02 | Phase 4 | Pending |

@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundations + GSC Auth + `/list` Slice** - Deployed, signature-verified Slack endpoint that lists GSC properties via Service Account auth, with the active-client list persisted in Redis
 - [x] **Phase 2: Client Management** - `/add` and `/remove` manage the active-client list with validation against `sites.list` and clear errors (completed 2026-06-25)
-- [ ] **Phase 3: GSC Metrics + Delta Computation** - Last-available-day resolution and per-metric % deltas (position inverted) with safe no-data handling
+- [x] **Phase 3: GSC Metrics + Delta Computation** - Last-available-day resolution and per-metric % deltas (position inverted) with safe no-data handling (completed 2026-06-25)
 - [ ] **Phase 4: Block Kit Report + Daily Cron** - One Block Kit message per client posted automatically each morning, idempotent and tz-correct, on a secured cron
 
 ## Phase Details
@@ -83,7 +83,7 @@ Plans:
 
 - [x] 03-01-PLAN.md — Pure delta core: DailyMetricRow type + resolveComparablePair (GSC-04) + computeDeltas (RPT-01) with unit tests (wave 1)
 - [x] 03-02-PLAN.md — lib/gsc.ts fetchDailyMetrics over a trailing window (GSC-03), injectable query, unit-tested with a mock (wave 2)
-- [ ] 03-03-PLAN.md — lib/report.ts getClientReport discriminated union + safe no-data/error handling (RPT-04), injected fetcher (wave 3)
+- [x] 03-03-PLAN.md — lib/report.ts getClientReport discriminated union + safe no-data/error handling (RPT-04), injected fetcher (wave 3)
 
 ### Phase 4: Block Kit Report + Daily Cron
 
@@ -114,5 +114,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
 | 2. Client Management | 3/3 | Complete   | 2026-06-25 |
-| 3. GSC Metrics + Delta Computation | 0/3 | Not started | - |
+| 3. GSC Metrics + Delta Computation | 3/3 | Complete   | 2026-06-25 |
 | 4. Block Kit Report + Daily Cron | 0/TBD | Not started | - |
