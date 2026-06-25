@@ -1,15 +1,14 @@
 /**
  * Slack slash-command endpoint (CMD-03, CMD-05, PER-01).
  *
- * Web-standard Vercel **Node** function. It must stay on the Node runtime
- * because `googleapis` does not run on Edge, so no edge-runtime export is
- * declared anywhere in this file. It:
+ * Web-standard Vercel **Node** function (stays on Node: `googleapis` does not
+ * run on Edge, so no edge-runtime export is declared). Thin dispatcher shell:
  *   1. reads the RAW request body with `await req.text()` (Slack signs the raw
  *      bytes; parsing first would break the HMAC — Pitfall 1/2),
  *   2. verifies the Slack signature over those bytes and returns 401 on failure
- *      BEFORE any GSC/Redis work (T-01-07 / T-01-08 mitigation),
- *   3. routes `/list`: merges the GSC readable properties with the active set in
- *      Redis, marking active ones with ✓, and replies ephemerally (Spanish).
+ *      BEFORE any parsing or backend work (T-02-06 / T-02-07 mitigation),
+ *   3. parses the verified body and routes the `command` field through the
+ *      dispatcher (`/list`, `/add`, `/remove`), replying ephemerally (Spanish).
  *
  * Security (ASVS V7): never log the raw body, the signature headers, or any
  * secret. Errors reply with a generic Spanish message, never internal detail.
@@ -18,35 +17,16 @@
  *  - https://vercel.com/kb/guide/how-do-i-get-the-raw-body-of-a-serverless-function
  *  - https://docs.slack.dev/authentication/verifying-requests-from-slack/
  */
-import { getActiveClients } from '../../lib/clients.js';
+import { dispatch } from '../../lib/commands/router.js';
 import { getConfig } from '../../lib/config.js';
-import { listReadableSites } from '../../lib/gsc.js';
-import type { GscSite } from '../../lib/gsc.js';
 import { verifySlackSignature } from '../../lib/slack/verify.js';
 
 // Fail-fast on cold start (SCH-03): validate every required env var the moment
 // the function module is loaded, before a single request is served. If any is
 // missing the cold start throws and the deploy surfaces the misconfiguration
-// immediately instead of erroring deep inside `/list`. This reference also
-// keeps `lib/config` wired into the real request path (not orphaned).
+// immediately. This reference also keeps `lib/config` wired into the real
+// request path (not orphaned).
 getConfig();
-
-/**
- * Render the `/list` reply text in Spanish (mrkdwn). Pure: no I/O, so the
- * empty-properties case is trivially correct and testable. Active properties
- * (present in the Redis set) get a ✓; the rest get a • bullet.
- */
-function formatListReply(sites: ReadonlyArray<GscSite>, active: ReadonlySet<string>): string {
-  if (sites.length === 0) {
-    return (
-      'No hay propiedades legibles por la Service Account todavía.\n' +
-      'Agrega el correo de la Service Account como usuario en cada propiedad de ' +
-      'Google Search Console y vuelve a ejecutar `/list`.'
-    );
-  }
-  const lines = sites.map((s) => `${active.has(s.siteUrl) ? '✓' : '•'} ${s.siteUrl}`);
-  return `*Propiedades GSC*\n${lines.join('\n')}`;
-}
 
 /** Build an ephemeral Slack JSON response. */
 function ephemeral(text: string): Response {
@@ -67,17 +47,13 @@ export async function POST(req: Request): Promise<Response> {
   // 3. Now it is safe to parse the verified body (x-www-form-urlencoded).
   const params = new URLSearchParams(raw);
   const command = params.get('command');
+  const text = params.get('text') ?? '';
 
-  // 4. Input validation (V5): only the supported command proceeds.
-  if (command !== '/list') {
-    return ephemeral('Comando no soportado.');
-  }
-
-  // 5. Compose the reply from GSC + Redis. Any failure (auth, network) replies
-  //    with a generic Spanish message rather than crashing or leaking detail.
+  // 4. Route the command. Any failure (auth, network) replies with a generic
+  //    Spanish message rather than crashing or leaking detail. No deps -> the
+  //    handlers wire the real GSC + Redis defaults in production.
   try {
-    const [sites, active] = await Promise.all([listReadableSites(), getActiveClients()]);
-    return ephemeral(formatListReply(sites, active));
+    return ephemeral(await dispatch(command, text));
   } catch {
     return ephemeral('Ocurrió un error al consultar las propiedades. Intenta de nuevo.');
   }
