@@ -29,10 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Running `/list` in Slack returns the GSC properties the Service Account can read, with `siteUnverifiedUser` properties filtered out
   3. The active-client list is written to and read from Upstash Redis and survives across separate serverless invocations
   4. All sensitive config (base64 Service Account JSON, Slack tokens, destination channel, `REPORT_TZ`) is loaded from environment variables, with nothing hardcoded
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
+- [ ] 01-01-PLAN.md — Provisioning (Slack App, GCP SA, Upstash) + scaffold TS/Vercel + lib/config.ts + npm install gate
+- [ ] 01-02-PLAN.md — Servicios compartidos con tests: verify.ts (HMAC), gsc.ts (sites.list + filtro), clients.ts (read Redis)
+- [ ] 01-03-PLAN.md — Handler /list + deploy a preview + seed Redis + verificación end-to-end
 
 ### Phase 2: Client Management
 **Goal**: Self-service management of which GSC properties are reported, via `/add` and `/remove`, validated against the live `sites.list` and storing canonical `siteUrl` values.
