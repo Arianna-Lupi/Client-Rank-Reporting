@@ -36,3 +36,55 @@ describe('getClientReport — happy path (RPT-04 MVP slice)', () => {
     expect(result.deltas).toEqual(computeDeltas(current, previous));
   });
 });
+
+describe('getClientReport — safe handling branches (RPT-04)', () => {
+  it('exactly 1 row -> insufficient_data with the single day date', async () => {
+    const result = await getClientReport('sc-domain:x.com', fetcherOf([row('2026-06-20')]));
+
+    expect(result).toEqual({ status: 'insufficient_data', date: '2026-06-20' });
+  });
+
+  it('0 rows -> no_data with no date field', async () => {
+    const result = await getClientReport('sc-domain:x.com', fetcherOf([]));
+
+    expect(result).toEqual({ status: 'no_data' });
+    expect('date' in result).toBe(false);
+  });
+
+  it('fetcher throws Error -> error variant, and the call RESOLVES (never rejects)', async () => {
+    const throwing: DailyMetricsFetcher = () => Promise.reject(new Error('boom'));
+
+    let result;
+    try {
+      result = await getClientReport('sc-domain:x.com', throwing);
+    } catch {
+      throw new Error('getClientReport must not reject');
+    }
+
+    expect(result.status).toBe('error');
+    if (result.status !== 'error') throw new Error('expected error');
+    expect(result.message.length).toBeGreaterThan(0);
+  });
+
+  it('secret safety: a planted token in the thrown error never leaks into message', async () => {
+    const leaky: DailyMetricsFetcher = () =>
+      Promise.reject(new Error('PRIVATE_KEY=abc123 leaked into the stack'));
+
+    const result = await getClientReport('sc-domain:x.com', leaky);
+
+    expect(result.status).toBe('error');
+    if (result.status !== 'error') throw new Error('expected error');
+    expect(result.message).not.toContain('PRIVATE_KEY');
+    expect(result.message).not.toContain('abc123');
+  });
+
+  it('non-Error throw is still handled -> generic error variant', async () => {
+    const weird: DailyMetricsFetcher = () => Promise.reject('weird');
+
+    const result = await getClientReport('sc-domain:x.com', weird);
+
+    expect(result.status).toBe('error');
+    if (result.status !== 'error') throw new Error('expected error');
+    expect(result.message.length).toBeGreaterThan(0);
+  });
+});
