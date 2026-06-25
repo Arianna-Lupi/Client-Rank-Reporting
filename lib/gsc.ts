@@ -15,6 +15,8 @@
  */
 import { google } from 'googleapis';
 
+import type { DailyMetricRow } from './metrics.js';
+
 const SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly'];
 
 export interface GscSite {
@@ -78,4 +80,83 @@ function getSearchConsole(): ReturnType<typeof google.searchconsole> {
 export async function listReadableSites(): Promise<GscSite[]> {
   const res = await getSearchConsole().sites.list();
   return filterReadableSites(res.data.siteEntry ?? []);
+}
+
+/** Options for {@link fetchDailyMetrics}. See 03-02-PLAN.md <interfaces>. */
+export interface FetchDailyOptions {
+  windowDays?: number; // default 14
+  dataState?: 'final' | 'all'; // default 'final'
+}
+
+/** Minimal shape of the searchanalytics.query response rows we depend on. */
+export interface RawAnalyticsRow {
+  keys?: string[] | null; // keys[0] is the date under dimensions:['date']
+  clicks?: number | null;
+  impressions?: number | null;
+  ctr?: number | null; // 0-1 fraction
+  position?: number | null; // average
+}
+
+/** Injectable query fn (DI for tests). Defaults to the real searchconsole client. */
+export type GscQueryFn = (params: {
+  siteUrl: string;
+  requestBody: {
+    startDate: string;
+    endDate: string;
+    dimensions: string[];
+    dataState: string;
+  };
+}) => Promise<{ data: { rows?: RawAnalyticsRow[] | null } }>;
+
+/** Format epoch ms as a 'YYYY-MM-DD' UTC date string. */
+function isoDay(ms: number): string {
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+/** Default query: a one-line wrapper over the live searchanalytics.query client. */
+const defaultQuery: GscQueryFn = (params) => getSearchConsole().searchanalytics.query(params);
+
+/**
+ * Fetch per-date metrics for a property over a trailing window (GSC-03).
+ *
+ * Builds [today-windowDays, today] (UTC; the 14-day window amply covers GSC's
+ * 2-3 day lag and resolveComparablePair picks the two most recent days WITH
+ * DATA regardless of the exact edge), queries dimensions:['date'] with
+ * dataState 'final', maps each row to DailyMetricRow (null fields coalesce to 0,
+ * keyless rows skipped), and returns the result sorted ascending by date.
+ * Returns [] when GSC yields no rows. The googleapis call is isolated behind the
+ * injectable `query` param so the suite runs with a mock — no live API.
+ */
+export async function fetchDailyMetrics(
+  siteUrl: string,
+  opts: FetchDailyOptions = {},
+  query: GscQueryFn = defaultQuery,
+): Promise<DailyMetricRow[]> {
+  const windowDays = opts.windowDays ?? 14;
+  const dataState = opts.dataState ?? 'final';
+
+  const now = Date.now();
+  const endDate = isoDay(now);
+  const startDate = isoDay(now - windowDays * 86_400_000);
+
+  const res = await query({
+    siteUrl,
+    requestBody: { startDate, endDate, dimensions: ['date'], dataState },
+  });
+
+  const rows = res.data.rows ?? [];
+  return rows
+    .map((r): DailyMetricRow | null => {
+      const date = r.keys?.[0];
+      if (date === undefined || date === '') return null;
+      return {
+        date,
+        clicks: r.clicks ?? 0,
+        impressions: r.impressions ?? 0,
+        ctr: r.ctr ?? 0,
+        position: r.position ?? 0,
+      };
+    })
+    .filter((r): r is DailyMetricRow => r !== null)
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
 }
