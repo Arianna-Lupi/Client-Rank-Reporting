@@ -3,7 +3,8 @@
  *
  * Authenticates with a Service Account whose full JSON credential is provided,
  * base64-encoded, in `GSC_SA_KEY_B64` (this avoids the private-key newline
- * escaping bug class entirely — we decode + JSON.parse, never `replace(/\\n/g)`).
+ * escaping bug class entirely — we decode + JSON.parse, never hand-patch the
+ * private-key newlines).
  * Lists the account's GSC properties and filters out `siteUnverifiedUser`
  * (properties the Service Account cannot actually read).
  *
