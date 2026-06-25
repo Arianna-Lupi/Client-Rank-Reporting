@@ -77,11 +77,13 @@ Plans:
   3. For each metric the bot computes the % variation of the last available day vs the previous day, with average position treated as inverted (lower is better) and divide-by-zero guarded
   4. Properties with no data / new / partial data yield a clear "sin datos" result instead of an error or nonsense delta
 
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md — Pure delta core: DailyMetricRow type + resolveComparablePair (GSC-04) + computeDeltas (RPT-01) with unit tests (wave 1)
+- [ ] 03-02-PLAN.md — lib/gsc.ts fetchDailyMetrics over a trailing window (GSC-03), injectable query, unit-tested with a mock (wave 2)
+- [ ] 03-03-PLAN.md — lib/report.ts getClientReport discriminated union + safe no-data/error handling (RPT-04), injected fetcher (wave 3)
 
 ### Phase 4: Block Kit Report + Daily Cron
 
@@ -112,5 +114,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
 | 2. Client Management | 3/3 | Complete   | 2026-06-25 |
-| 3. GSC Metrics + Delta Computation | 0/TBD | Not started | - |
+| 3. GSC Metrics + Delta Computation | 0/3 | Not started | - |
 | 4. Block Kit Report + Daily Cron | 0/TBD | Not started | - |
