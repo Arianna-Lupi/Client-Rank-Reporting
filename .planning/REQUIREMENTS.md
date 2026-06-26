@@ -17,8 +17,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Reporting
 
 - [x] **RPT-01**: Para cada métrica el bot calcula el % de variación del último día disponible vs el día previo comparable
-- [ ] **RPT-02**: El reporte muestra la dirección de la variación con indicador visual (flecha/emoji), invirtiendo el criterio para posición media (menor = mejor)
-- [ ] **RPT-03**: El reporte se publica como un mensaje por cliente en el canal, formateado con Block Kit (impresiones, clics, CTR, posición + sus deltas)
+- [x] **RPT-02**: El reporte muestra la dirección de la variación con indicador visual (flecha/emoji), invirtiendo el criterio para posición media (menor = mejor)
+- [x] **RPT-03**: El reporte se publica como un mensaje por cliente en el canal, formateado con Block Kit (impresiones, clics, CTR, posición + sus deltas)
 - [x] **RPT-04**: El reporte maneja casos sin datos / propiedad nueva / datos parciales sin romper (mensaje claro en vez de error)
 
 ### Slack Commands
@@ -86,8 +86,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GSC-04 | Phase 3 | Complete |
 | RPT-01 | Phase 3 | Complete |
 | RPT-04 | Phase 3 | Complete |
-| RPT-02 | Phase 4 | Pending |
-| RPT-03 | Phase 4 | Pending |
+| RPT-02 | Phase 4 | Complete |
+| RPT-03 | Phase 4 | Complete |
 | PER-02 | Phase 4 | Pending |
 | SCH-01 | Phase 4 | Pending |
 | SCH-02 | Phase 4 | Pending |
