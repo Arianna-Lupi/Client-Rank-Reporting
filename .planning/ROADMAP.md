@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Foundations + GSC Auth + `/list` Slice** - Deployed, signature-verified Slack endpoint that lists GSC properties via Service Account auth, with the active-client list persisted in Redis
 - [x] **Phase 2: Client Management** - `/add` and `/remove` manage the active-client list with validation against `sites.list` and clear errors (completed 2026-06-25)
 - [x] **Phase 3: GSC Metrics + Delta Computation** - Last-available-day resolution and per-metric % deltas (position inverted) with safe no-data handling (completed 2026-06-25)
-- [ ] **Phase 4: Block Kit Report + Daily Cron** - One Block Kit message per client posted automatically each morning, idempotent and tz-correct, on a secured cron
+- [x] **Phase 4: Block Kit Report + Daily Cron** - One Block Kit message per client posted automatically each morning, idempotent and tz-correct, on a secured cron (code complete 2026-06-26; live deploy/e2e credential-gated)
 
 ## Phase Details
 
@@ -105,7 +105,7 @@ Plans:
 
 - [x] 04-01-PLAN.md — Config (SLACK_BOT_TOKEN, CRON_SECRET, REPORT_HOUR) + buildClientReportBlocks puro con dirección invertida y casos sin datos (RPT-02, RPT-03)
 - [x] 04-02-PLAN.md — Primitivas del cron: isReportHour/reportDateKey DST-safe, isAuthorizedCron, claimDailyReport (SCH-01, SCH-02, PER-02)
-- [ ] 04-03-PLAN.md — postMessage proactivo + handler api/cron/daily-report.ts + vercel.json crons hourly (RPT-03, SCH-01, SCH-02, PER-02)
+- [x] 04-03-PLAN.md — postMessage proactivo + handler api/cron/daily-report.ts + vercel.json crons hourly (RPT-03, SCH-01, SCH-02, PER-02)
 
 ## Progress
 
@@ -117,4 +117,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
 | 2. Client Management | 3/3 | Complete   | 2026-06-25 |
 | 3. GSC Metrics + Delta Computation | 3/3 | Complete   | 2026-06-25 |
-| 4. Block Kit Report + Daily Cron | 2/3 | In Progress | - |
+| 4. Block Kit Report + Daily Cron | 3/3 | Complete (code; live e2e credential-gated) | 2026-06-26 |
