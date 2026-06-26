@@ -3,6 +3,15 @@
   "functions": {
     "api/slack/command.ts": {
       "maxDuration": 10
+    },
+    "api/cron/daily-report.ts": {
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/daily-report",
+      "schedule": "0 * * * *"
+    }
+  ]
 }
