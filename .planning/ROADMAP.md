@@ -104,7 +104,7 @@ Plans:
 Plans:
 
 - [x] 04-01-PLAN.md — Config (SLACK_BOT_TOKEN, CRON_SECRET, REPORT_HOUR) + buildClientReportBlocks puro con dirección invertida y casos sin datos (RPT-02, RPT-03)
-- [ ] 04-02-PLAN.md — Primitivas del cron: isReportHour/reportDateKey DST-safe, isAuthorizedCron, claimDailyReport (SCH-01, SCH-02, PER-02)
+- [x] 04-02-PLAN.md — Primitivas del cron: isReportHour/reportDateKey DST-safe, isAuthorizedCron, claimDailyReport (SCH-01, SCH-02, PER-02)
 - [ ] 04-03-PLAN.md — postMessage proactivo + handler api/cron/daily-report.ts + vercel.json crons hourly (RPT-03, SCH-01, SCH-02, PER-02)
 
 ## Progress
@@ -117,4 +117,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundations + GSC Auth + `/list` Slice | 2/3 (01-03 Task 1 done; Task 2 e2e awaiting human creds) | In Progress|  |
 | 2. Client Management | 3/3 | Complete   | 2026-06-25 |
 | 3. GSC Metrics + Delta Computation | 3/3 | Complete   | 2026-06-25 |
-| 4. Block Kit Report + Daily Cron | 1/3 | In Progress | - |
+| 4. Block Kit Report + Daily Cron | 2/3 | In Progress | - |

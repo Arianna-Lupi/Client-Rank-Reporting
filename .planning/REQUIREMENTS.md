@@ -32,12 +32,12 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Persistence
 
 - [x] **PER-01**: La lista de clientes activos persiste en Redis (Upstash) entre invocaciones serverless
-- [ ] **PER-02**: El bot evita publicar el reporte diario duplicado ante reintentos/reinvocaciones (clave de idempotencia con TTL)
+- [x] **PER-02**: El bot evita publicar el reporte diario duplicado ante reintentos/reinvocaciones (clave de idempotencia con TTL)
 
 ### Scheduling & Infra
 
-- [ ] **SCH-01**: Un cron de Vercel dispara el reporte diario y publica a las 9:00 AM en la zona horaria configurada (`REPORT_TZ`), manejando que Vercel Cron corre en UTC
-- [ ] **SCH-02**: El endpoint del cron está protegido (`CRON_SECRET`) para que no se pueda disparar externamente
+- [x] **SCH-01**: Un cron de Vercel dispara el reporte diario y publica a las 9:00 AM en la zona horaria configurada (`REPORT_TZ`), manejando que Vercel Cron corre en UTC
+- [x] **SCH-02**: El endpoint del cron está protegido (`CRON_SECRET`) para que no se pueda disparar externamente
 - [x] **SCH-03**: La configuración sensible (Service Account, tokens de Slack, canal destino, zona horaria) se maneja por variables de entorno
 
 ## v2 Requirements
@@ -88,9 +88,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RPT-04 | Phase 3 | Complete |
 | RPT-02 | Phase 4 | Complete |
 | RPT-03 | Phase 4 | Complete |
-| PER-02 | Phase 4 | Pending |
-| SCH-01 | Phase 4 | Pending |
-| SCH-02 | Phase 4 | Pending |
+| PER-02 | Phase 4 | Complete |
+| SCH-01 | Phase 4 | Complete |
+| SCH-02 | Phase 4 | Complete |
 
 **Coverage:**
 
