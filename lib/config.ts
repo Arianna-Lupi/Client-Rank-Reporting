@@ -19,9 +19,32 @@ export interface AppConfig {
   readonly upstashRedisRestToken: string;
   /** IANA timezone for the daily report. Defaults to America/Mexico_City. */
   readonly reportTz: string;
+  /** Slack bot token (xoxb-…, scope chat:write) for proactive posts (RPT-03). */
+  readonly slackBotToken: string;
+  /** Shared secret Vercel injects into cron invocations to authorize them (SCH-02). */
+  readonly cronSecret: string;
+  /** Local hour (0-23) in REPORT_TZ at which the daily report fires. Default 9 (SCH-01). */
+  readonly reportHour: number;
 }
 
 const DEFAULT_REPORT_TZ = 'America/Mexico_City';
+const DEFAULT_REPORT_HOUR = 9;
+
+/**
+ * Parse REPORT_HOUR from the environment. Accepts an integer in [0, 23];
+ * anything missing or invalid falls back to DEFAULT_REPORT_HOUR (9).
+ */
+function resolveReportHour(): number {
+  const raw = process.env.REPORT_HOUR?.trim();
+  if (raw === undefined || raw === '') {
+    return DEFAULT_REPORT_HOUR;
+  }
+  const parsed = Number(raw);
+  if (Number.isInteger(parsed) && parsed >= 0 && parsed <= 23) {
+    return parsed;
+  }
+  return DEFAULT_REPORT_HOUR;
+}
 
 /**
  * Read a required environment variable. Throws a descriptive error that names
@@ -56,6 +79,9 @@ export function getConfig(): AppConfig {
     upstashRedisRestUrl: requireEnv('UPSTASH_REDIS_REST_URL'),
     upstashRedisRestToken: requireEnv('UPSTASH_REDIS_REST_TOKEN'),
     reportTz: process.env.REPORT_TZ?.trim() || DEFAULT_REPORT_TZ,
+    slackBotToken: requireEnv('SLACK_BOT_TOKEN'),
+    cronSecret: requireEnv('CRON_SECRET'),
+    reportHour: resolveReportHour(),
   };
   return cached;
 }
