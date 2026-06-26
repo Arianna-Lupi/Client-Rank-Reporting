@@ -99,11 +99,13 @@ Plans:
   4. Reruns or retries do not produce a duplicate daily post (atomic `SET NX` idempotency key with TTL)
   5. The cron endpoint rejects any external trigger lacking the correct `CRON_SECRET`
 
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 
-- [ ] 04-01: TBD
+- [ ] 04-01-PLAN.md — Config (SLACK_BOT_TOKEN, CRON_SECRET, REPORT_HOUR) + buildClientReportBlocks puro con dirección invertida y casos sin datos (RPT-02, RPT-03)
+- [ ] 04-02-PLAN.md — Primitivas del cron: isReportHour/reportDateKey DST-safe, isAuthorizedCron, claimDailyReport (SCH-01, SCH-02, PER-02)
+- [ ] 04-03-PLAN.md — postMessage proactivo + handler api/cron/daily-report.ts + vercel.json crons hourly (RPT-03, SCH-01, SCH-02, PER-02)
 
 ## Progress
 
