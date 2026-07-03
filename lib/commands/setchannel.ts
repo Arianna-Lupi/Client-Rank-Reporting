@@ -18,8 +18,12 @@ import { resolveSiteRef } from '../site-match.js';
 export interface SetChannelDeps {
   /** Defaults to the real Redis reader (clients.getActiveClients default). */
   reader?: ActiveClientReader;
-  /** Defaults to the real Redis writer (channels.setClientChannel default). */
-  writer?: ChannelMapWriter;
+  /**
+   * Channel-map writer (defaults to channels.setClientChannel's Redis client).
+   * Named `channelWriter` (not `writer`) so CommandDeps can intersect this with
+   * AddDeps/RemoveDeps, whose `writer` is the ActiveClientWriter.
+   */
+  channelWriter?: ChannelMapWriter;
 }
 
 /** Parsed Slack channel mention. */
@@ -77,7 +81,7 @@ export async function handleSetChannel(
     return `«${clientRef}» coincide con varias propiedades. Pega la exacta:\n${lines}`;
   }
 
-  await setClientChannel(result.siteUrl, channel.id, deps.writer);
+  await setClientChannel(result.siteUrl, channel.id, deps.channelWriter);
   const channelLabel = channel.name === '' ? 'ese canal' : `#${channel.name}`;
   return `Listo, el reporte de *${result.siteUrl}* ahora se publica en ${channelLabel}.`;
 }

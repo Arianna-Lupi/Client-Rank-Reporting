@@ -34,7 +34,7 @@ describe('handleSetChannel', () => {
     const writer = fakeWriter();
     const reply = await handleSetChannel('deltacloudz.com', {
       reader: fakeReader(ACTIVE),
-      writer,
+      channelWriter: writer,
     });
     expect(reply.toLowerCase()).toContain('uso');
     expect(reply).toContain('/setchannel');
@@ -45,7 +45,7 @@ describe('handleSetChannel', () => {
     const writer = fakeWriter();
     const reply = await handleSetChannel('deltacloudz.com #general', {
       reader: fakeReader(ACTIVE),
-      writer,
+      channelWriter: writer,
     });
     expect(reply).toContain('canal');
     expect(reply).toContain('autocompletado');
@@ -56,7 +56,7 @@ describe('handleSetChannel', () => {
     const writer = fakeWriter();
     const reply = await handleSetChannel('noexiste.com <#C0123ABCD|general>', {
       reader: fakeReader(ACTIVE),
-      writer,
+      channelWriter: writer,
     });
     expect(reply).toContain('no está en el reporte');
     expect(writer.hsetCalls).toEqual([]);
@@ -66,7 +66,7 @@ describe('handleSetChannel', () => {
     const writer = fakeWriter();
     const reply = await handleSetChannel('deltacloudz.com <#C0123ABCD|deltacloudz>', {
       reader: fakeReader(ACTIVE),
-      writer,
+      channelWriter: writer,
     });
     expect(writer.hsetCalls).toEqual([
       ['clients:channels', { 'sc-domain:deltacloudz.com': 'C0123ABCD' }],
@@ -77,10 +77,10 @@ describe('handleSetChannel', () => {
 
   it('never emits an em/en dash in any reply', async () => {
     const replies = await Promise.all([
-      handleSetChannel('', { reader: fakeReader(ACTIVE), writer: fakeWriter() }),
-      handleSetChannel('deltacloudz.com #general', { reader: fakeReader(ACTIVE), writer: fakeWriter() }),
-      handleSetChannel('noexiste.com <#C0123ABCD|general>', { reader: fakeReader(ACTIVE), writer: fakeWriter() }),
-      handleSetChannel('deltacloudz.com <#C0123ABCD|deltacloudz>', { reader: fakeReader(ACTIVE), writer: fakeWriter() }),
+      handleSetChannel('', { reader: fakeReader(ACTIVE), channelWriter: fakeWriter() }),
+      handleSetChannel('deltacloudz.com #general', { reader: fakeReader(ACTIVE), channelWriter: fakeWriter() }),
+      handleSetChannel('noexiste.com <#C0123ABCD|general>', { reader: fakeReader(ACTIVE), channelWriter: fakeWriter() }),
+      handleSetChannel('deltacloudz.com <#C0123ABCD|deltacloudz>', { reader: fakeReader(ACTIVE), channelWriter: fakeWriter() }),
     ]);
     for (const r of replies) {
       expect(r).not.toMatch(/[—–]/);

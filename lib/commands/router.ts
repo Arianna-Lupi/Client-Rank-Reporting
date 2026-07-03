@@ -12,8 +12,12 @@ import { handleList } from './list.js';
 import type { ListDeps } from './list.js';
 import { handleRemove } from './remove.js';
 import type { RemoveDeps } from './remove.js';
+import { handleSetChannel } from './setchannel.js';
+import type { SetChannelDeps } from './setchannel.js';
+import { handleGetData } from './getdata.js';
+import type { GetDataDeps } from './getdata.js';
 
-export type CommandDeps = AddDeps & RemoveDeps & ListDeps;
+export type CommandDeps = AddDeps & RemoveDeps & ListDeps & SetChannelDeps & GetDataDeps;
 
 /** Routes on the Slack command field. Returns the ephemeral reply text. */
 export async function dispatch(
@@ -28,6 +32,10 @@ export async function dispatch(
       return handleAdd(arg, deps);
     case '/remove':
       return handleRemove(arg, deps);
+    case '/setchannel':
+      return handleSetChannel(arg, deps);
+    case '/getdata':
+      return handleGetData(arg, deps);
     default:
       return 'Comando no soportado.';
   }

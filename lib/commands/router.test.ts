@@ -50,6 +50,39 @@ describe('dispatch', () => {
     expect(reply).toContain('https://childrenchic.com/');
   });
 
+  it('routes /setchannel to handleSetChannel', async () => {
+    const hsetCalls: Array<[string, Record<string, string>]> = [];
+    const reply = await dispatch('/setchannel', 'childrenchic.com <#C0777XYZ|childrenchic>', {
+      ...deps(),
+      channelWriter: {
+        async hset(key: string, obj: Record<string, string>): Promise<number> {
+          hsetCalls.push([key, obj]);
+          return 1;
+        },
+      },
+    });
+    expect(reply).toContain('https://childrenchic.com/');
+    expect(hsetCalls).toEqual([['clients:channels', { 'https://childrenchic.com/': 'C0777XYZ' }]]);
+  });
+
+  it('routes /getdata to handleGetData', async () => {
+    const posts: Array<[string, unknown]> = [];
+    const reply = await dispatch('/getdata', 'childrenchic.com', {
+      ...deps(),
+      channelReader: {
+        async hget(): Promise<string | null> { return 'C0777XYZ'; },
+        async hgetall(): Promise<Record<string, string> | null> { return null; },
+      },
+      getReport: async () => ({ status: 'no_data' }) as never,
+      post: (async (channel: string, blocks: unknown[]) => {
+        posts.push([channel, blocks]);
+      }) as never,
+    });
+    expect(reply).toContain('https://childrenchic.com/');
+    expect(posts).toHaveLength(1);
+    expect(posts[0]![0]).toBe('C0777XYZ');
+  });
+
   it('returns the unsupported message for an unknown command', async () => {
     expect(await dispatch('/desconocido', '', deps())).toBe('Comando no soportado.');
   });
