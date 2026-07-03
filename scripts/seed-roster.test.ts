@@ -56,7 +56,7 @@ describe('seedRoster', () => {
     expect(new Set(seeded)).toEqual(new Set(ROSTER));
   });
 
-  it('is idempotent — re-running against an already-present set does not throw', async () => {
+  it('issues exactly one SADD per roster entry regardless of prior membership', async () => {
     const writer = fakeWriter(0); // SADD returns 0: member already present
     await expect(seedRoster(writer)).resolves.not.toThrow();
     expect(writer.saddCalls).toHaveLength(ROSTER.length);
