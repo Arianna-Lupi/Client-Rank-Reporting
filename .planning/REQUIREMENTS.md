@@ -48,12 +48,12 @@ Reemplaza el modelo día-vs-día y canal-único de v1 por comparación semanal y
 
 ### GSC Integration
 
-- [ ] **GSC-05**: El bot resuelve la ventana "semana a semana" como los últimos 7 días con datos vs los 7 días previos, anclada al último día disponible (absorbe el lag de 2-3 días de GSC)
-- [ ] **GSC-06**: El bot consulta Search Analytics con dimensión `page` para obtener clics por URL de una propiedad en una ventana de fechas dada
+- [x] **GSC-05**: El bot resuelve la ventana "semana a semana" como los últimos 7 días con datos vs los 7 días previos, anclada al último día disponible (absorbe el lag de 2-3 días de GSC)
+- [x] **GSC-06**: El bot consulta Search Analytics con dimensión `page` para obtener clics por URL de una propiedad en una ventana de fechas dada
 
 ### Reporting
 
-- [ ] **RPT-05**: Para cada métrica el bot calcula el % de variación de la semana actual (7 días) vs la semana previa comparable (reemplaza el cálculo día-vs-día de RPT-01 en el reporte semanal)
+- [x] **RPT-05**: Para cada métrica el bot calcula el % de variación de la semana actual (7 días) vs la semana previa comparable (reemplaza el cálculo día-vs-día de RPT-01 en el reporte semanal)
 - [ ] **RPT-07**: El reporte por cliente muestra tráfico (impresiones) y clics semana vs semana, más CTR y posición media, cada uno con su delta semanal e indicador de dirección
 - [ ] **RPT-08**: El reporte lista las top 3 URLs que más subieron en clics semana vs semana para el cliente
 - [ ] **RPT-09**: El reporte lista las top 3 URLs que más bajaron en clics semana vs semana para el cliente
@@ -119,9 +119,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PER-02 | Phase 4 | Complete |
 | SCH-01 | Phase 4 | Complete |
 | SCH-02 | Phase 4 | Complete |
-| GSC-05 | Phase 5 | Pending |
-| GSC-06 | Phase 5 | Pending |
-| RPT-05 | Phase 5 | Pending |
+| GSC-05 | Phase 5 | Complete |
+| GSC-06 | Phase 5 | Complete |
+| RPT-05 | Phase 5 | Complete |
 | RPT-07 | Phase 6 | Pending |
 | RPT-08 | Phase 6 | Pending |
 | RPT-09 | Phase 6 | Pending |

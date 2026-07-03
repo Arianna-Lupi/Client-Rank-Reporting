@@ -1,16 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: Weekly Per-Client Reports
-status: roadmap_ready
-last_updated: "2026-07-03T20:10:00.000Z"
-last_activity: 2026-07-03
+milestone_name: milestone
+status: planning
+stopped_at: Milestone v1.1 roadmap created — Phases 5 (GSC-05/06, RPT-05), 6 (RPT-07/08/09/10), 7 (CH-01/02/03, CFG-01). All 11 v1.1 requirements mapped.
+last_updated: "2026-07-03T19:58:05.705Z"
+last_activity: 2026-07-03 — Milestone v1.1 roadmap created (Phases 5, 6, 7)
 progress:
-  total_phases: 3
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_phases: 7
+  completed_phases: 4
+  total_plans: 14
+  completed_plans: 13
+  percent: 57
 ---
 
 # Project State
@@ -20,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** Cada mañana el equipo ve, sin entrar a GSC, cómo se movió cada cliente día contra día directamente en Slack.
-**Current focus:** Milestone v1.1 — Phase 5 (Weekly Window + Per-URL Metrics), roadmap ready, awaiting `/gsd:plan-phase 5`
+**Current focus:** Milestone v1.1 — Phase 5 complete (weekly compute + per-URL clicks); next is Phase 6 (Block Kit rendering)
 
 ## Current Position
 
-Phase: 5 — Weekly Window + Per-URL Metrics (not started)
-Plan: —
-Status: Roadmap ready — v1.1 phases 5-7 mapped, awaiting planning
-Last activity: 2026-07-03 — Milestone v1.1 roadmap created (Phases 5, 6, 7)
+Phase: 5 — Weekly Window + Per-URL Metrics (complete — 05-01, 05-02 executed)
+Plan: 05-02 (last) complete
+Status: Phase 5 code complete — GSC-05/GSC-06/RPT-05 delivered, 118 tests green, typecheck clean
+Last activity: 2026-07-03 — Executed Phase 5 plans 05-01 (lib/weekly.ts) and 05-02 (fetchPageClicks)
 
 ## Performance Metrics
 
