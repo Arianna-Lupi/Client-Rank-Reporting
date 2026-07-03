@@ -7,11 +7,13 @@
  * REPORT_TZ (default Monday 09:00). Composition order:
  *   1. Authorize the caller (Bearer CRON_SECRET) or 401 before any work (SCH-02).
  *   2. No-op unless it is the report hour AND the report weekday (SCH-04).
- *   3. Claim the per-run idempotency lock; skip if already posted (PER-02).
- *   4. Load the client->channel map and the active set ONCE, then post each
- *      client's WEEKLY report to ITS mapped channel (CH-03). An unmapped client
- *      is skipped with a siteUrl-only warn and never aborts the run. Per-client
- *      report/post failures are isolated.
+ *   3. Load the client->channel map and the active set ONCE (BEFORE the lock, so
+ *      a Redis read failure surfaces without poisoning the weekly idempotency
+ *      key — WR-03).
+ *   4. Claim the per-run idempotency lock; skip if already posted (PER-02), then
+ *      post each client's WEEKLY report to ITS mapped channel (CH-03). An
+ *      unmapped client is skipped with a siteUrl-only warn and never aborts the
+ *      run. Per-client report/post failures are isolated.
  *
  * The v1.0 single `SLACK_CHANNEL_ID` posting destination is retired — routing is
  * 100% via the channel map. Security (ASVS V7): never log the bot token, the
@@ -63,14 +65,10 @@ export async function GET(req: Request, deps: CronDeps = {}): Promise<Response> 
     return Response.json({ skipped: 'not-report-window' });
   }
 
-  // 3. Claim the per-run idempotency lock; skip if already posted (PER-02).
-  const claimLock = deps.claimLock ?? claimDailyReport;
-  const dateKey = reportDateKey(now, cfg.reportTz);
-  if (!(await claimLock(dateKey))) {
-    return Response.json({ skipped: 'already-posted', dateKey });
-  }
-
-  // 4. Load the channel map and the active set once, then route per client.
+  // 3. Load the channel map and the active set ONCE, BEFORE claiming the lock.
+  //    If either Redis read throws, the handler rejects here — the idempotency
+  //    key is NOT yet written, so the ~36h weekly lock is never poisoned and the
+  //    next invocation in the report window can retry the whole run (WR-03).
   const getChannels = deps.getChannels ?? getAllChannels;
   const getActive = deps.getActive ?? getActiveClients;
   const getReport = deps.getReport ?? getWeeklyClientReport;
@@ -79,6 +77,13 @@ export async function GET(req: Request, deps: CronDeps = {}): Promise<Response> 
 
   const channels = await getChannels();
   const clients = await getActive();
+
+  // 4. Claim the per-run idempotency lock; skip if already posted (PER-02).
+  const claimLock = deps.claimLock ?? claimDailyReport;
+  const dateKey = reportDateKey(now, cfg.reportTz);
+  if (!(await claimLock(dateKey))) {
+    return Response.json({ skipped: 'already-posted', dateKey });
+  }
 
   let posted = 0;
   let skippedUnmapped = 0;

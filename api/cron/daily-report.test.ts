@@ -138,6 +138,27 @@ describe('cron GET', () => {
     expect(post.calls).toEqual([]);
   });
 
+  it('does not claim the weekly lock when a Redis read fails before it (WR-03)', async () => {
+    const claimLock = vi.fn(async () => true);
+    const post = recordingPost();
+    // getChannels rejects — this must happen BEFORE the lock is claimed, so the
+    // ~36h idempotency key is never written and the week can retry.
+    await expect(
+      GET(
+        authedRequest(),
+        baseDeps({
+          claimLock,
+          post: post.fn,
+          getChannels: async () => {
+            throw new Error('upstash unreachable');
+          },
+        }),
+      ),
+    ).rejects.toThrow();
+    expect(claimLock).not.toHaveBeenCalled();
+    expect(post.calls).toEqual([]);
+  });
+
   it('routes each mapped client to its own channel and warn-skips the unmapped one', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const post = recordingPost();
