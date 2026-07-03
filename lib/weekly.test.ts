@@ -82,6 +82,21 @@ describe('resolveWeeklyWindow (GSC-05)', () => {
     expect(res.window.previousEnd).toBe('2026-06-13');
   });
 
+  it('WR-01: gapped data (full current week + isolated old day, empty previous week) -> insufficient_data', () => {
+    // Current week 2026-06-14..2026-06-20 fully populated (7 distinct days)
+    // plus one isolated day at 2026-05-31 (anchor-20, older than previousStart
+    // 2026-06-07). That is 8 distinct days -> passes the raw distinct-day gate,
+    // but the previous window 2026-06-07..2026-06-13 carries zero data.
+    const rows = [row('2026-05-31'), ...run('2026-06-14', 7)];
+    const res = resolveWeeklyWindow(rows);
+
+    // Must NOT resolve to 'ok' with an all-zero previous aggregate (which would
+    // mislabel every metric as isNew:true / deltaPct:null).
+    expect(res.status).toBe('insufficient_data');
+    if (res.status !== 'insufficient_data') throw new Error('expected insufficient_data');
+    expect(res.distinctDays).toBe(8);
+  });
+
   it('honors a custom windowDays parameter', () => {
     const rows = run('2026-06-01', 20);
     const res = resolveWeeklyWindow(rows, 3);

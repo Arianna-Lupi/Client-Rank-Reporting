@@ -98,6 +98,26 @@ export function resolveWeeklyWindow(
     previousStart: shiftDay(anchor, -(2 * windowDays - 1)),
   };
 
+  // The distinctDays gate above counts EVERY fetched day, including days that
+  // fall outside the two resolved windows. Over a 21-day fetch an isolated old
+  // day (older than previousStart) can push the count past the threshold while
+  // the previous window is entirely empty — which would surface status:'ok'
+  // with an all-zero previous aggregate and mislabel an established client's
+  // data gap as brand-new (deltaPct:null + isNew:true on every metric).
+  // Guard on data actually landing inside each comparable week: interpret the
+  // "<8 distinct days -> insufficient_data" decision as "within the two
+  // comparable weeks", requiring the current week non-empty and at least one
+  // day in the previous week (a partial previous week stays allowed).
+  let inCurrent = 0;
+  let inPrevious = 0;
+  for (const date of distinct) {
+    if (date >= window.currentStart && date <= window.currentEnd) inCurrent++;
+    else if (date >= window.previousStart && date <= window.previousEnd) inPrevious++;
+  }
+  if (inCurrent < 1 || inPrevious < 1) {
+    return { status: 'insufficient_data', distinctDays };
+  }
+
   return { status: 'ok', window, anchor };
 }
 
