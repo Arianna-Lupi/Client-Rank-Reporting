@@ -40,6 +40,35 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SCH-02**: El endpoint del cron está protegido (`CRON_SECRET`) para que no se pueda disparar externamente
 - [x] **SCH-03**: La configuración sensible (Service Account, tokens de Slack, canal destino, zona horaria) se maneja por variables de entorno
 
+## v1.1 Requirements (Current Milestone)
+
+**Milestone v1.1: Weekly Per-Client Reports** — definido 2026-07-03.
+
+Reemplaza el modelo día-vs-día y canal-único de v1 por comparación semanal y ruteo por cliente, y agrega las URLs que más suben/bajan en clics.
+
+### GSC Integration
+
+- [ ] **GSC-05**: El bot resuelve la ventana "semana a semana" como los últimos 7 días con datos vs los 7 días previos, anclada al último día disponible (absorbe el lag de 2-3 días de GSC)
+- [ ] **GSC-06**: El bot consulta Search Analytics con dimensión `page` para obtener clics por URL de una propiedad en una ventana de fechas dada
+
+### Reporting
+
+- [ ] **RPT-05**: Para cada métrica el bot calcula el % de variación de la semana actual (7 días) vs la semana previa comparable (reemplaza el cálculo día-vs-día de RPT-01 en el reporte semanal)
+- [ ] **RPT-07**: El reporte por cliente muestra tráfico (impresiones) y clics semana vs semana, más CTR y posición media, cada uno con su delta semanal e indicador de dirección
+- [ ] **RPT-08**: El reporte lista las top 3 URLs que más subieron en clics semana vs semana para el cliente
+- [ ] **RPT-09**: El reporte lista las top 3 URLs que más bajaron en clics semana vs semana para el cliente
+- [ ] **RPT-10**: Los mensajes y números del reporte usan formato legible (miles separados, porcentajes y posición redondeados, URLs recortadas) en Block Kit
+
+### Channel Routing
+
+- [ ] **CH-01**: El bot mantiene en Redis un mapa cliente (propiedad GSC) → canal de Slack destino, persistente entre invocaciones
+- [ ] **CH-02**: Un comando de Slack setea o actualiza el canal destino de un cliente dado
+- [ ] **CH-03**: El reporte de cada cliente se publica en su canal mapeado; un cliente sin canal asignado se omite con un aviso claro (no rompe la corrida)
+
+### Onboarding
+
+- [ ] **CFG-01**: El roster inicial de clientes queda cargado: deltacloudz.com, felipevergara.co, childrenchic.com, fhcaorlando.com (nicmafia removido); childrenchic.com se renombra a su nuevo dominio cuando Arianna lo confirme
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -52,8 +81,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Reporting
 
-- **RPT-05**: Modo de comparación alternativo (ventana 7 días vs 7 previos)
-- **RPT-06**: Resumen "top movers" (mayores subidas/bajadas del día entre clientes)
+- **RPT-06**: Resumen "top movers" (mayores subidas/bajadas entre clientes, cross-cliente)
 
 ## Out of Scope
 
@@ -100,4 +128,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-06-25*
-*Last updated: 2026-06-25 after roadmap creation (traceability mapped)*
+*Last updated: 2026-07-03 — milestone v1.1 requirements added (GSC-05/06, RPT-05/07/08/09/10, CH-01/02/03, CFG-01)*

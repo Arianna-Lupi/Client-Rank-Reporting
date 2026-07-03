@@ -8,6 +8,18 @@ Un bot de Slack que publica diariamente en un canal el reporte de métricas de G
 
 Cada mañana el equipo ve, sin entrar a GSC, cómo se movió cada cliente día contra día directamente en Slack.
 
+## Current Milestone: v1.1 Weekly Per-Client Reports
+
+**Goal:** Reporte semanal por cliente, publicado cada uno a su propio canal interno de Slack, con comparación semana vs semana y las URLs que más suben/bajan en clics.
+
+**Target features:**
+- Comparación semana vs semana (7 días vs 7 previos, anclada al último día con datos de GSC) en lugar de día vs día
+- Ruteo por cliente: cada cliente reporta a su propio canal de Slack (mapa cliente→canal en Redis, seteado por comando)
+- Top 3 URLs que subieron en clics y top 3 que bajaron, por cliente, vía Search Analytics con dimensión `page`
+- Métricas del reporte: tráfico (impresiones) WoW + clics WoW + CTR + posición media, todas con su delta semanal
+- Mejor formato de mensajes y números (Block Kit más legible)
+- Roster inicial: deltacloudz.com, felipevergara.co, childrenchic.com (renombrar a nuevo dominio después), fhcaorlando.com
+
 ## Requirements
 
 ### Validated
@@ -59,6 +71,10 @@ Cada mañana el equipo ve, sin entrar a GSC, cómo se movió cada cliente día c
 | Comparar último día disponible vs previo | GSC tiene lag de 2-3 días; fechas fijas darían datos parciales/vacíos | — Pending |
 | Vercel KV/Upstash para lista de clientes | Serverless es efímero; necesita estado externo persistente | — Pending |
 | Un mensaje por cliente | Claridad por cliente y permite escanear rápido en el canal | — Pending |
+| [v1.1] Comparación semana vs semana (7d vs 7d previos) | Arianna pidió reporte semanal; ventana móvil anclada al último día absorbe el lag GSC | — Pending |
+| [v1.1] 1 canal por cliente (mapa en Redis) | Cada cliente tiene su canal interno; mapa en Redis evita redeploy al cambiar canal | — Pending |
+| [v1.1] "tráfico" = impresiones | Arianna lista tráfico y clics por separado; tráfico es la otra métrica de volumen GSC | — Pending |
+| [v1.1] Mantener CTR y posición media | Se suman a las nuevas métricas en vez de reemplazar | — Pending |
 
 ## Evolution
 
@@ -78,4 +94,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-25 after initialization*
+*Last updated: 2026-07-03 — milestone v1.1 started*
