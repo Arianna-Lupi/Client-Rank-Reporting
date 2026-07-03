@@ -150,7 +150,12 @@ Plans:
   3. The report lists the top 3 URLs that dropped the most in clicks week-over-week for that client
   4. Numbers and messages render readably in Block Kit (thousands separators, rounded percentages and position, trimmed/shortened URLs) without overflowing or breaking layout
 
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+
+- [ ] 06-01-PLAN.md — lib/weekly-report.ts: getWeeklyClientReport(siteUrl, deps?) orquestador discriminado (ok/insufficient_data/no_data/error), never-throwing y secret-free, fetchers inyectables; produce deltas WoW + lista rankeada de URLs (RPT-07/08/09) (wave 1)
+- [ ] 06-02-PLAN.md — buildWeeklyClientReportBlocks en lib/slack/blocks.ts: métricas WoW + Top 3 subidas/bajadas, formato es-ES/CTR 2 dec/posición/URLs truncadas (RPT-10), degradación amable, copy humanizada; builder diario intacto (wave 2) (RPT-07/08/09/10)
 
 ### Phase 7: Per-Client Channel Routing + Roster
 
@@ -179,5 +184,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. GSC Metrics + Delta Computation | 3/3 | Complete   | 2026-06-25 |
 | 4. Block Kit Report + Daily Cron | 3/3 | Complete (code; live e2e credential-gated) | 2026-06-26 |
 | 5. Weekly Window + Per-URL Metrics | 0/2 | Planned | - |
-| 6. Weekly Client Report (Block Kit) | 0/TBD | Not started | - |
+| 6. Weekly Client Report (Block Kit) | 0/2 | Planned | - |
 | 7. Per-Client Channel Routing + Roster | 0/TBD | Not started | - |
