@@ -97,6 +97,22 @@ describe('resolveWeeklyWindow (GSC-05)', () => {
     expect(res.distinctDays).toBe(8);
   });
 
+  it('WR-02: resolves window boundaries across a month and year boundary', () => {
+    // 14 contiguous days 2025-12-23 .. 2026-01-05 -> anchor 2026-01-05.
+    // currentStart and previousStart both roll back across the month/year edge.
+    const res = resolveWeeklyWindow(run('2025-12-23', 14));
+
+    expect(res.status).toBe('ok');
+    if (res.status !== 'ok') throw new Error('expected ok');
+    expect(res.anchor).toBe('2026-01-05');
+    expect(res.window).toEqual({
+      currentStart: '2025-12-30',
+      currentEnd: '2026-01-05',
+      previousStart: '2025-12-23',
+      previousEnd: '2025-12-29',
+    });
+  });
+
   it('honors a custom windowDays parameter', () => {
     const rows = run('2026-06-01', 20);
     const res = resolveWeeklyWindow(rows, 3);
