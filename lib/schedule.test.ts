@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isReportHour, reportDateKey } from './schedule.js';
+import { isReportDow, isReportHour, reportDateKey } from './schedule.js';
 
 /**
  * Pure scheduling tests (SCH-01). `now` is always an injected fixed instant, so
@@ -30,6 +30,25 @@ describe('isReportHour', () => {
     expect(isReportHour(winter, TZ, 9)).toBe(true);
     // The same UTC hour does NOT match across the DST boundary:
     expect(isReportHour(new Date('2026-01-15T13:00:00Z'), TZ, 9)).toBe(false);
+  });
+});
+
+describe('isReportDow', () => {
+  it('returns true when the local weekday equals the target dow (Monday=1)', () => {
+    // 2026-07-13 is a Monday. 13:00 UTC = 09:00 EDT, still Monday local.
+    expect(isReportDow(new Date('2026-07-13T13:00:00Z'), TZ, 1)).toBe(true);
+  });
+
+  it('returns false when the local weekday does not match', () => {
+    // Monday-local instant is not Sunday (dow=0).
+    expect(isReportDow(new Date('2026-07-13T13:00:00Z'), TZ, 0)).toBe(false);
+  });
+
+  it('uses the LOCAL weekday, not the UTC one, across a day boundary', () => {
+    // 2026-07-13 02:00 UTC = 2026-07-12 22:00 in New_York (Sunday local).
+    const instant = new Date('2026-07-13T02:00:00Z');
+    expect(isReportDow(instant, TZ, 0)).toBe(true); // Sunday local
+    expect(isReportDow(instant, TZ, 1)).toBe(false); // not Monday local
   });
 });
 
