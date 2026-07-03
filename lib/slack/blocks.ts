@@ -104,7 +104,7 @@ export function buildClientReportBlocks(siteUrl: string, report: ClientReport): 
 // Added alongside the daily builder above; buildClientReportBlocks and its
 // helpers stay untouched so their tests remain green. All Spanish copy posted
 // from here is humanized: no AI tells, no em/en dashes in prose. Notation is
-// preserved on purpose — the header/truncation ellipsis (U+2026) and the minus
+// preserved on purpose: the header/truncation ellipsis (U+2026) and the minus
 // sign (U+2212) in click deltas are symbols, not prose dashes.
 
 /** Thousands-grouped es-ES integer formatter (Node full-ICU) for clicks/impressions. */
@@ -115,7 +115,7 @@ function formatThousands(value: number): string {
   return esInteger.format(Math.round(value));
 }
 
-/** Format CTR (a 0-1 fraction) as a percentage with 2 decimals — weekly override of the daily 1-decimal CTR (RPT-10). */
+/** Format CTR (a 0-1 fraction) as a percentage with 2 decimals: weekly override of the daily 1-decimal CTR (RPT-10). */
 function formatCtr2(value: number): string {
   return `${(value * 100).toFixed(2)}%`;
 }
@@ -162,7 +162,7 @@ function weeklyMetricsText(deltas: MetricDeltas): string {
 /**
  * Render one client's WEEKLY report as Block Kit blocks (RPT-07/08/09/10).
  *
- * Total over every WeeklyClientReport variant — never throws, never leaks
+ * Total over every WeeklyClientReport variant, never throws, never leaks
  * `report.message`. The daily builder above is left intact. The `ok` layout is:
  * header with the current week range, the four WoW metrics, a divider, then the
  * top 3 rising and top 3 dropping URLs by click delta. When no URL movement is
@@ -189,7 +189,7 @@ export function buildWeeklyClientReportBlocks(
       const droppers = urls.filter((u) => u.delta < 0).slice(0, 3);
 
       if (risers.length === 0 && droppers.length === 0) {
-        blocks.push(contextBlock('Esta semana todavía no hay movimiento de URLs para mostrar.'));
+        blocks.push(contextBlock('Esta semana no tengo URLs con movimiento para mostrar.'));
       } else {
         if (risers.length > 0) blocks.push(urlSection('*Las páginas que más subieron*', risers));
         if (droppers.length > 0) blocks.push(urlSection('*Las páginas que más bajaron*', droppers));
@@ -198,7 +198,7 @@ export function buildWeeklyClientReportBlocks(
     }
     case 'insufficient_data':
     case 'no_data':
-      return [contextBlock(`📊 *${siteUrl}*: todavía no hay datos suficientes para el reporte semanal.`)];
+      return [contextBlock(`📊 *${siteUrl}*: aún faltan datos para armar el reporte semanal.`)];
     case 'error':
       return [contextBlock(`📊 *${siteUrl}*: por ahora no pude armar el reporte semanal.`)];
   }
