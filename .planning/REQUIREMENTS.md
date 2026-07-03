@@ -61,21 +61,21 @@ Reemplaza el modelo día-vs-día y canal-único de v1 por comparación semanal y
 
 ### Channel Routing
 
-- [ ] **CH-01**: El bot mantiene en Redis un mapa cliente (propiedad GSC) → canal de Slack destino, persistente entre invocaciones
-- [ ] **CH-02**: Un comando de Slack (`/setchannel <cliente> <#canal>`) setea o actualiza el canal destino de un cliente dado, validando cliente activo y formato de canal
-- [ ] **CH-03**: El reporte de cada cliente se publica en su canal mapeado; un cliente sin canal asignado se omite con un aviso (log, no rompe la corrida)
+- [x] **CH-01**: El bot mantiene en Redis un mapa cliente (propiedad GSC) → canal de Slack destino, persistente entre invocaciones
+- [x] **CH-02**: Un comando de Slack (`/setchannel <cliente> <#canal>`) setea o actualiza el canal destino de un cliente dado, validando cliente activo y formato de canal
+- [x] **CH-03**: El reporte de cada cliente se publica en su canal mapeado; un cliente sin canal asignado se omite con un aviso (log, no rompe la corrida)
 
 ### Slack Commands (v1.1)
 
-- [ ] **CMD-09**: `/getdata <cliente>` publica on-demand el reporte semanal de ese cliente en su canal mapeado (reply efímero al invocante confirmando el canal, o error claro si el cliente no existe o no tiene canal asignado); reutiliza el orquestador y el builder semanales
+- [x] **CMD-09**: `/getdata <cliente>` publica on-demand el reporte semanal de ese cliente en su canal mapeado (reply efímero al invocante confirmando el canal, o error claro si el cliente no existe o no tiene canal asignado); reutiliza el orquestador y el builder semanales
 
 ### Scheduling
 
-- [ ] **SCH-04**: El cron publica con cadencia SEMANAL — el handler horario gatea la corrida al día de semana configurado (`REPORT_DOW`, default lunes) además de `REPORT_HOUR`, y usa el reporte semanal con ruteo por canal en lugar del reporte diario a canal único (supersede SCH-01/RPT-03 en la ruta de publicación)
+- [x] **SCH-04**: El cron publica con cadencia SEMANAL — el handler horario gatea la corrida al día de semana configurado (`REPORT_DOW`, default lunes) además de `REPORT_HOUR`, y usa el reporte semanal con ruteo por canal en lugar del reporte diario a canal único (supersede SCH-01/RPT-03 en la ruta de publicación)
 
 ### Onboarding
 
-- [ ] **CFG-01**: El roster inicial de clientes queda cargado: deltacloudz.com, felipevergara.co, childrenchic.com, fhcaorlando.com (nicmafia removido); childrenchic.com se renombra a su nuevo dominio cuando Arianna lo confirme
+- [x] **CFG-01**: El roster inicial de clientes queda cargado: deltacloudz.com, felipevergara.co, childrenchic.com, fhcaorlando.com (nicmafia removido); childrenchic.com se renombra a su nuevo dominio cuando Arianna lo confirme
 
 ## v2 Requirements
 
@@ -134,10 +134,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RPT-08 | Phase 6 | Complete |
 | RPT-09 | Phase 6 | Complete |
 | RPT-10 | Phase 6 | Complete |
-| CH-01 | Phase 7 | Pending |
-| CH-02 | Phase 7 | Pending |
-| CH-03 | Phase 7 | Pending |
-| CFG-01 | Phase 7 | Pending |
+| CH-01 | Phase 7 | Complete |
+| CH-02 | Phase 7 | Complete |
+| CH-03 | Phase 7 | Complete |
+| CFG-01 | Phase 7 | Complete |
 
 **Coverage:**
 
