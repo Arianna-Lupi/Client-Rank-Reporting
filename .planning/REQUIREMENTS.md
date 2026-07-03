@@ -62,8 +62,16 @@ Reemplaza el modelo día-vs-día y canal-único de v1 por comparación semanal y
 ### Channel Routing
 
 - [ ] **CH-01**: El bot mantiene en Redis un mapa cliente (propiedad GSC) → canal de Slack destino, persistente entre invocaciones
-- [ ] **CH-02**: Un comando de Slack setea o actualiza el canal destino de un cliente dado
-- [ ] **CH-03**: El reporte de cada cliente se publica en su canal mapeado; un cliente sin canal asignado se omite con un aviso claro (no rompe la corrida)
+- [ ] **CH-02**: Un comando de Slack (`/setchannel <cliente> <#canal>`) setea o actualiza el canal destino de un cliente dado, validando cliente activo y formato de canal
+- [ ] **CH-03**: El reporte de cada cliente se publica en su canal mapeado; un cliente sin canal asignado se omite con un aviso (log, no rompe la corrida)
+
+### Slack Commands (v1.1)
+
+- [ ] **CMD-09**: `/getdata <cliente>` publica on-demand el reporte semanal de ese cliente en su canal mapeado (reply efímero al invocante confirmando el canal, o error claro si el cliente no existe o no tiene canal asignado); reutiliza el orquestador y el builder semanales
+
+### Scheduling
+
+- [ ] **SCH-04**: El cron publica con cadencia SEMANAL — el handler horario gatea la corrida al día de semana configurado (`REPORT_DOW`, default lunes) además de `REPORT_HOUR`, y usa el reporte semanal con ruteo por canal en lugar del reporte diario a canal único (supersede SCH-01/RPT-03 en la ruta de publicación)
 
 ### Onboarding
 
@@ -76,7 +84,7 @@ Deferred to future release. Tracked but not in current roadmap.
 ### Slack Commands
 
 - **CMD-06**: Aliases legibles por cliente (mapear nombre corto → URL de propiedad GSC)
-- **CMD-07**: Comando `/report` para disparar el reporte on-demand
+- **CMD-07**: Comando `/report` para disparar el reporte on-demand — SUPERSEDED por CMD-09 (`/getdata`) en v1.1
 - **CMD-08**: Allowlist de quién puede usar `/add` y `/remove` + auditoría de cambios
 
 ### Reporting
