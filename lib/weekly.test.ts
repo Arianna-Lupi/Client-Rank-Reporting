@@ -8,6 +8,7 @@ import {
   sliceWindow,
 } from './weekly.js';
 import type { WeeklyAggregate } from './weekly.js';
+import { MS_PER_DAY } from './constants.js';
 import type { DailyMetricRow } from './metrics.js';
 
 /** Build a DailyMetricRow with sensible defaults so cases stay readable. */
@@ -20,7 +21,7 @@ function run(start: string, count: number, over: Partial<DailyMetricRow> = {}): 
   const rows: DailyMetricRow[] = [];
   const base = Date.parse(start);
   for (let i = 0; i < count; i++) {
-    const date = new Date(base + i * 86_400_000).toISOString().slice(0, 10);
+    const date = new Date(base + i * MS_PER_DAY).toISOString().slice(0, 10);
     rows.push(row(date, over));
   }
   return rows;

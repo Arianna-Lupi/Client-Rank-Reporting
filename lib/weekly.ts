@@ -13,6 +13,7 @@
  * rows, which absorbs GSC's 2-3 day lag exactly like `resolveComparablePair`.
  * Exhaustively unit-tested offline so Phase 6 (Block Kit) is thin wiring.
  */
+import { MS_PER_DAY } from './constants.js';
 import { computeDeltas } from './metrics.js';
 import type { DailyMetricRow, MetricDeltas } from './metrics.js';
 
@@ -55,7 +56,7 @@ export interface UrlClickDelta {
 function shiftDay(date: string, deltaDays: number): string {
   const [y, m, d] = date.split('-').map(Number);
   const base = Date.UTC(y!, m! - 1, d!);
-  return new Date(base + deltaDays * 86_400_000).toISOString().slice(0, 10);
+  return new Date(base + deltaDays * MS_PER_DAY).toISOString().slice(0, 10);
 }
 
 /**

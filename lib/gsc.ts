@@ -15,6 +15,7 @@
  */
 import { google } from 'googleapis';
 
+import { MS_PER_DAY, PAGE_ROW_LIMIT } from './constants.js';
 import type { DailyMetricRow } from './metrics.js';
 
 const SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly'];
@@ -138,7 +139,7 @@ export async function fetchDailyMetrics(
 
   const now = Date.now();
   const endDate = isoDay(now);
-  const startDate = isoDay(now - windowDays * 86_400_000);
+  const startDate = isoDay(now - windowDays * MS_PER_DAY);
 
   const res = await query({
     siteUrl,
@@ -183,7 +184,7 @@ export async function fetchPageClicks(
 ): Promise<Map<string, number>> {
   const res = await query({
     siteUrl,
-    requestBody: { startDate, endDate, dimensions: ['page'], dataState: 'final', rowLimit: 250 },
+    requestBody: { startDate, endDate, dimensions: ['page'], dataState: 'final', rowLimit: PAGE_ROW_LIMIT },
   });
 
   const rows = res.data.rows ?? [];
