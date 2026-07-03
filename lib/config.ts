@@ -25,10 +25,13 @@ export interface AppConfig {
   readonly cronSecret: string;
   /** Local hour (0-23) in REPORT_TZ at which the daily report fires. Default 9 (SCH-01). */
   readonly reportHour: number;
+  /** Local weekday (0=Sun … 6=Sat) in REPORT_TZ for the weekly cadence. Default 1 = Monday (SCH-04). */
+  readonly reportDow: number;
 }
 
 const DEFAULT_REPORT_TZ = 'America/Mexico_City';
 const DEFAULT_REPORT_HOUR = 9;
+const DEFAULT_REPORT_DOW = 1;
 
 /**
  * Parse REPORT_HOUR from the environment. Accepts an integer in [0, 23];
@@ -44,6 +47,23 @@ function resolveReportHour(): number {
     return parsed;
   }
   return DEFAULT_REPORT_HOUR;
+}
+
+/**
+ * Parse REPORT_DOW from the environment. Accepts an integer in [0, 6] (0=Sunday
+ * … 6=Saturday); anything missing or invalid falls back to DEFAULT_REPORT_DOW
+ * (1 = Monday) so a bad value can never crash the weekly run (T-07-01).
+ */
+function resolveReportDow(): number {
+  const raw = process.env.REPORT_DOW?.trim();
+  if (raw === undefined || raw === '') {
+    return DEFAULT_REPORT_DOW;
+  }
+  const parsed = Number(raw);
+  if (Number.isInteger(parsed) && parsed >= 0 && parsed <= 6) {
+    return parsed;
+  }
+  return DEFAULT_REPORT_DOW;
 }
 
 /**
@@ -82,6 +102,7 @@ export function getConfig(): AppConfig {
     slackBotToken: requireEnv('SLACK_BOT_TOKEN'),
     cronSecret: requireEnv('CRON_SECRET'),
     reportHour: resolveReportHour(),
+    reportDow: resolveReportDow(),
   };
   return cached;
 }

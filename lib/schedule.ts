@@ -33,6 +33,41 @@ export function isReportHour(now: Date, tz: string, hour: number): boolean {
   return localHour === hour;
 }
 
+/** Short weekday name -> index (0=Sunday … 6=Saturday), the Intl 'short' form. */
+const WEEKDAY_INDEX: Record<string, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+};
+
+/**
+ * True only when the local weekday in `tz` equals `dow` (0=Sunday … 6=Saturday).
+ * Uses Intl to derive the local weekday from `now`, so a fixed UTC instant maps
+ * to the correct local day on either side of a midnight/DST boundary. Powers the
+ * weekly cadence gate alongside isReportHour (SCH-04).
+ */
+export function isReportDow(now: Date, tz: string, dow: number): boolean {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    weekday: 'short',
+  }).formatToParts(now);
+
+  const weekday = parts.find((p) => p.type === 'weekday')?.value;
+  if (weekday === undefined) {
+    return false;
+  }
+
+  const localDow = WEEKDAY_INDEX[weekday];
+  if (localDow === undefined) {
+    return false;
+  }
+  return localDow === dow;
+}
+
 /**
  * The local calendar day in `tz` as 'YYYY-MM-DD'. `en-CA` already formats dates
  * in ISO order, so `format(now)` is the key directly — used as the per-day
