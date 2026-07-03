@@ -165,3 +165,84 @@ describe('sliceWindow', () => {
     expect(sliced.map((r) => r.date)).toEqual(['2026-06-20']);
   });
 });
+
+/** Build a WeeklyAggregate with zeroed defaults. */
+function agg(over: Partial<WeeklyAggregate> = {}): WeeklyAggregate {
+  return { clicks: 0, impressions: 0, ctr: 0, position: 0, ...over };
+}
+
+describe('computeWeeklyDeltas (RPT-05, reuse of metrics core)', () => {
+  it('clicks/impressions improvement: higher-is-better, improved=true', () => {
+    const d = computeWeeklyDeltas(
+      agg({ clicks: 120, impressions: 2200 }),
+      agg({ clicks: 100, impressions: 2000 }),
+    );
+
+    expect(d.clicks.deltaPct).toBe(20);
+    expect(d.clicks.improved).toBe(true);
+    expect(d.impressions.deltaPct).toBe(10);
+    expect(d.impressions.improved).toBe(true);
+  });
+
+  it('weekly CTR delta higher-is-better', () => {
+    const d = computeWeeklyDeltas(agg({ ctr: 0.05 }), agg({ ctr: 0.04 }));
+
+    expect(d.ctr.deltaPct).toBe(25);
+    expect(d.ctr.improved).toBe(true);
+  });
+
+  it('weekly position is INVERTED: lower current -> improved=true', () => {
+    const d = computeWeeklyDeltas(agg({ position: 4.2 }), agg({ position: 5.0 }));
+
+    expect(d.position.deltaPct).toBe(-16);
+    expect(d.position.improved).toBe(true);
+  });
+
+  it('previous week clicks 0 -> deltaPct null + isNew true (÷0 guard inherited)', () => {
+    const d = computeWeeklyDeltas(agg({ clicks: 15 }), agg({ clicks: 0 }));
+
+    expect(d.clicks.deltaPct).toBeNull();
+    expect(d.clicks.isNew).toBe(true);
+    expect(d.clicks.improved).toBe(true);
+  });
+});
+
+describe('rankUrlClickDeltas (per-URL ranking)', () => {
+  it('ranks a riser and a dropper by |delta|', () => {
+    const current = new Map([['/a', 100], ['/b', 5]]);
+    const previous = new Map([['/a', 40], ['/b', 60]]);
+
+    const ranked = rankUrlClickDeltas(current, previous);
+
+    // /a delta +60, /b delta -55 -> /a first by magnitude
+    expect(ranked.map((r) => r.url)).toEqual(['/a', '/b']);
+    expect(ranked[0]).toEqual({ url: '/a', current: 100, previous: 40, delta: 60, isNew: false });
+    expect(ranked[1]).toEqual({ url: '/b', current: 5, previous: 60, delta: -55, isNew: false });
+  });
+
+  it('includes a NEW URL (only in current) as a riser with isNew=true', () => {
+    const ranked = rankUrlClickDeltas(new Map([['/new', 30]]), new Map());
+
+    expect(ranked).toHaveLength(1);
+    expect(ranked[0]).toEqual({ url: '/new', current: 30, previous: 0, delta: 30, isNew: true });
+  });
+
+  it('includes a dropper (only in previous) with a negative delta', () => {
+    const ranked = rankUrlClickDeltas(new Map(), new Map([['/gone', 25]]));
+
+    expect(ranked[0]).toEqual({ url: '/gone', current: 0, previous: 25, delta: -25, isNew: false });
+  });
+
+  it('breaks |delta| ties deterministically by url ascending', () => {
+    const current = new Map([['/z', 10], ['/a', 10]]);
+    const previous = new Map([['/z', 0], ['/a', 0]]);
+
+    const ranked = rankUrlClickDeltas(current, previous);
+
+    expect(ranked.map((r) => r.url)).toEqual(['/a', '/z']);
+  });
+
+  it('empty maps -> []', () => {
+    expect(rankUrlClickDeltas(new Map(), new Map())).toEqual([]);
+  });
+});

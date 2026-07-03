@@ -49,8 +49,8 @@ export interface UrlClickDelta {
 /**
  * Shift a 'YYYY-MM-DD' date by `deltaDays` (may be negative) in UTC.
  *
- * Parses the parts explicitly and uses `Date.UTC`, then reformats — NEVER
- * `new Date()` without arguments, so nothing here reads the current date.
+ * Parses the parts explicitly and uses `Date.UTC`, then reformats — never an
+ * argument-less Date constructor, so nothing here reads the current date.
  */
 function shiftDay(date: string, deltaDays: number): string {
   const [y, m, d] = date.split('-').map(Number);
