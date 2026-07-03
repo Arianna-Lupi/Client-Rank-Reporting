@@ -54,10 +54,10 @@ Reemplaza el modelo día-vs-día y canal-único de v1 por comparación semanal y
 ### Reporting
 
 - [x] **RPT-05**: Para cada métrica el bot calcula el % de variación de la semana actual (7 días) vs la semana previa comparable (reemplaza el cálculo día-vs-día de RPT-01 en el reporte semanal)
-- [ ] **RPT-07**: El reporte por cliente muestra tráfico (impresiones) y clics semana vs semana, más CTR y posición media, cada uno con su delta semanal e indicador de dirección
-- [ ] **RPT-08**: El reporte lista las top 3 URLs que más subieron en clics semana vs semana para el cliente
-- [ ] **RPT-09**: El reporte lista las top 3 URLs que más bajaron en clics semana vs semana para el cliente
-- [ ] **RPT-10**: Los mensajes y números del reporte usan formato legible (miles separados, porcentajes y posición redondeados, URLs recortadas) en Block Kit
+- [x] **RPT-07**: El reporte por cliente muestra tráfico (impresiones) y clics semana vs semana, más CTR y posición media, cada uno con su delta semanal e indicador de dirección
+- [x] **RPT-08**: El reporte lista las top 3 URLs que más subieron en clics semana vs semana para el cliente
+- [x] **RPT-09**: El reporte lista las top 3 URLs que más bajaron en clics semana vs semana para el cliente
+- [x] **RPT-10**: Los mensajes y números del reporte usan formato legible (miles separados, porcentajes y posición redondeados, URLs recortadas) en Block Kit
 
 ### Channel Routing
 
@@ -122,10 +122,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GSC-05 | Phase 5 | Complete |
 | GSC-06 | Phase 5 | Complete |
 | RPT-05 | Phase 5 | Complete |
-| RPT-07 | Phase 6 | Pending |
-| RPT-08 | Phase 6 | Pending |
-| RPT-09 | Phase 6 | Pending |
-| RPT-10 | Phase 6 | Pending |
+| RPT-07 | Phase 6 | Complete |
+| RPT-08 | Phase 6 | Complete |
+| RPT-09 | Phase 6 | Complete |
+| RPT-10 | Phase 6 | Complete |
 | CH-01 | Phase 7 | Pending |
 | CH-02 | Phase 7 | Pending |
 | CH-03 | Phase 7 | Pending |

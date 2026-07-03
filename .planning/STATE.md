@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: milestone
-status: planning
+status: completed
 stopped_at: Milestone v1.1 roadmap created — Phases 5 (GSC-05/06, RPT-05), 6 (RPT-07/08/09/10), 7 (CH-01/02/03, CFG-01). All 11 v1.1 requirements mapped.
-last_updated: "2026-07-03T19:58:05.705Z"
-last_activity: 2026-07-03 — Milestone v1.1 roadmap created (Phases 5, 6, 7)
+last_updated: "2026-07-03T20:30:05.961Z"
+last_activity: 2026-07-03 — Executed Phase 5 plans 05-01 (lib/weekly.ts) and 05-02 (fetchPageClicks)
 progress:
   total_phases: 7
-  completed_phases: 4
-  total_plans: 14
-  completed_plans: 13
-  percent: 57
+  completed_phases: 6
+  total_plans: 16
+  completed_plans: 15
+  percent: 71
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** Cada mañana el equipo ve, sin entrar a GSC, cómo se movió cada cliente día contra día directamente en Slack.
-**Current focus:** Milestone v1.1 — Phase 5 complete (weekly compute + per-URL clicks); next is Phase 6 (Block Kit rendering)
+**Current focus:** Milestone v1.1 — Phase 6 complete (weekly report orchestrator + Block Kit builder); next is Phase 7 (channel routing + config)
 
 ## Current Position
 
-Phase: 5 — Weekly Window + Per-URL Metrics (complete — 05-01, 05-02 executed)
-Plan: 05-02 (last) complete
-Status: Phase 5 code complete — GSC-05/GSC-06/RPT-05 delivered, 118 tests green, typecheck clean
-Last activity: 2026-07-03 — Executed Phase 5 plans 05-01 (lib/weekly.ts) and 05-02 (fetchPageClicks)
+Phase: 6 — Weekly Client Report (Block Kit) (complete — 06-01, 06-02 executed)
+Plan: 06-02 (last) complete
+Status: Phase 6 code complete — RPT-07/08/09/10 delivered, 134 tests green, typecheck clean. Verification offline (VERIFICATION.md: passed)
+Last activity: 2026-07-03 — Executed Phase 6 plans 06-01 (lib/weekly-report.ts) and 06-02 (buildWeeklyClientReportBlocks)
 
 ## Performance Metrics
 
@@ -58,6 +58,8 @@ Last activity: 2026-07-03 — Executed Phase 5 plans 05-01 (lib/weekly.ts) and 0
 | Phase 03 P01 | 4 | 2 tasks | 2 files |
 | Phase 03 P02 | 3 | 1 task | 2 files |
 | Phase 03 P03 | 3 | 2 tasks | 2 files |
+| Phase 06 P01 | 8 | 1 task | 2 files |
+| Phase 06 P02 | 12 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -96,6 +98,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-07-03T20:10:00.000Z
+Last session: 2026-07-03T20:30:05.954Z
 Stopped at: Milestone v1.1 roadmap created — Phases 5 (GSC-05/06, RPT-05), 6 (RPT-07/08/09/10), 7 (CH-01/02/03, CFG-01). All 11 v1.1 requirements mapped.
-Resume file: None — next step is `/gsd:plan-phase 5`
+Resume file: None
