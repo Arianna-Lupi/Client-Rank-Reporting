@@ -65,7 +65,7 @@ describe('dispatch', () => {
     expect(hsetCalls).toEqual([['clients:channels', { 'https://childrenchic.com/': 'C0777XYZ' }]]);
   });
 
-  it('routes /getdata to handleGetData', async () => {
+  it('routes /getdata to handleGetData and does NOT post on no_data (WR-02)', async () => {
     const posts: Array<[string, unknown]> = [];
     const reply = await dispatch('/getdata', 'childrenchic.com', {
       ...deps(),
@@ -78,9 +78,11 @@ describe('dispatch', () => {
         posts.push([channel, blocks]);
       }) as never,
     });
+    // Reaching the resolved siteUrl proves the command routed to handleGetData;
+    // a no_data report must publish nothing to the live client channel.
     expect(reply).toContain('https://childrenchic.com/');
-    expect(posts).toHaveLength(1);
-    expect(posts[0]![0]).toBe('C0777XYZ');
+    expect(reply).toContain('No publiqué nada');
+    expect(posts).toEqual([]);
   });
 
   it('returns the unsupported message for an unknown command', async () => {
