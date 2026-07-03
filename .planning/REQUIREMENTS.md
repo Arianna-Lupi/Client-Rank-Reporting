@@ -119,13 +119,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PER-02 | Phase 4 | Complete |
 | SCH-01 | Phase 4 | Complete |
 | SCH-02 | Phase 4 | Complete |
+| GSC-05 | Phase 5 | Pending |
+| GSC-06 | Phase 5 | Pending |
+| RPT-05 | Phase 5 | Pending |
+| RPT-07 | Phase 6 | Pending |
+| RPT-08 | Phase 6 | Pending |
+| RPT-09 | Phase 6 | Pending |
+| RPT-10 | Phase 6 | Pending |
+| CH-01 | Phase 7 | Pending |
+| CH-02 | Phase 7 | Pending |
+| CH-03 | Phase 7 | Pending |
+| CFG-01 | Phase 7 | Pending |
 
 **Coverage:**
 
-- v1 requirements: 18 enumerated (note: prior header said "19 total" — the enumerated list contains 18 distinct IDs; corrected here)
-- Mapped to phases: 18 ✓
+- v1 requirements: 18 enumerated, mapped to Phases 1-4 ✓
+- v1.1 requirements: 11 enumerated (GSC-05/06, RPT-05/07/08/09/10, CH-01/02/03, CFG-01)
+- v1.1 mapped to phases: 11 ✓ (Phase 5: 3, Phase 6: 4, Phase 7: 4)
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-06-25*
-*Last updated: 2026-07-03 — milestone v1.1 requirements added (GSC-05/06, RPT-05/07/08/09/10, CH-01/02/03, CFG-01)*
+*Last updated: 2026-07-03 — v1.1 traceability mapped: Phase 5 (GSC-05/06, RPT-05), Phase 6 (RPT-07/08/09/10), Phase 7 (CH-01/02/03, CFG-01)*

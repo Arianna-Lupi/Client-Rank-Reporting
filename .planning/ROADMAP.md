@@ -4,6 +4,8 @@
 
 The bot is built bottom-up as four vertical slices that match the dependency graph: shared services first, then the command surface, then the correctness-critical delta math, then the composed daily push. Phase 1 proves the three riskiest integration seams (Slack raw-body HMAC, GSC Service Account auth, Redis persistence) on the cheapest end-to-end path — `/list`. Phase 2 completes self-service client management. Phase 3 isolates the highest-value correctness work (last-available-day resolution and per-metric deltas) behind unit tests. Phase 4 composes everything into the Block Kit report and the idempotent, DST-safe daily cron. The result: every morning the team sees, without opening GSC, how each client moved day over day in Slack.
 
+**Milestone v1.1 (Weekly Per-Client Reports):** Extends the existing report pipeline — it does NOT rebuild it. The v1.0 daily cron, Search Analytics client, delta core and Block Kit builder are reused; v1.1 hangs a weekly window (7d vs 7d), a per-URL `page`-dimension query, week-over-week deltas, top-mover URL lists, richer formatting, and per-client channel routing off those existing seams. Phases 5→7 continue numbering (v1.0 ended at Phase 4) and deliver: the weekly data layer, the composed weekly Block Kit report, and per-client channel routing with the initial roster.
+
 ## Phases
 
 **Phase Numbering:**
@@ -13,10 +15,18 @@ The bot is built bottom-up as four vertical slices that match the dependency gra
 
 Decimal phases appear between their surrounding integers in numeric order.
 
+### Milestone v1.0 (complete)
+
 - [ ] **Phase 1: Foundations + GSC Auth + `/list` Slice** - Deployed, signature-verified Slack endpoint that lists GSC properties via Service Account auth, with the active-client list persisted in Redis
 - [x] **Phase 2: Client Management** - `/add` and `/remove` manage the active-client list with validation against `sites.list` and clear errors (completed 2026-06-25)
 - [x] **Phase 3: GSC Metrics + Delta Computation** - Last-available-day resolution and per-metric % deltas (position inverted) with safe no-data handling (completed 2026-06-25)
 - [x] **Phase 4: Block Kit Report + Daily Cron** - One Block Kit message per client posted automatically each morning, idempotent and tz-correct, on a secured cron (code complete 2026-06-26; live deploy/e2e credential-gated)
+
+### Milestone v1.1 (Weekly Per-Client Reports)
+
+- [ ] **Phase 5: Weekly Window + Per-URL Metrics** - The weekly data layer: resolve last-7d-vs-prior-7d anchored to the last available GSC day, query per-URL clicks via the `page` dimension, and compute week-over-week % deltas
+- [ ] **Phase 6: Weekly Client Report (Block Kit)** - A per-client weekly Block Kit report showing traffic + clicks + CTR + position WoW plus the top 3 rising and top 3 dropping URLs by clicks, with readable number formatting
+- [ ] **Phase 7: Per-Client Channel Routing + Roster** - Each client's report posts to its own mapped Slack channel (Redis map, set by command); unmapped clients are skipped with a clear notice, and the initial roster is loaded
 
 ## Phase Details
 
@@ -107,10 +117,55 @@ Plans:
 - [x] 04-02-PLAN.md — Primitivas del cron: isReportHour/reportDateKey DST-safe, isAuthorizedCron, claimDailyReport (SCH-01, SCH-02, PER-02)
 - [x] 04-03-PLAN.md — postMessage proactivo + handler api/cron/daily-report.ts + vercel.json crons hourly (RPT-03, SCH-01, SCH-02, PER-02)
 
+### Phase 5: Weekly Window + Per-URL Metrics
+
+**Goal**: Extend the existing GSC data layer to a weekly model — resolve the "last 7 days with data vs the prior 7 days" window anchored to the last available GSC day, query per-URL clicks via the `page` dimension, and compute week-over-week % deltas per metric. This is the correctness core of v1.1; it reuses the v1.0 Search Analytics client and delta primitives rather than replacing them.
+**Mode:** mvp
+**Depends on**: Phase 4 (reuses `lib/gsc.ts` Search Analytics fetch and the Phase 3 delta core)
+**Requirements**: GSC-05, GSC-06, RPT-05
+**Success Criteria** (what must be TRUE):
+
+  1. Given a property, the bot resolves a weekly comparison window as the last 7 days that have GSC data versus the 7 days immediately before them, anchored to the last available day (never a hardcoded date), absorbing the 2-3 day lag
+  2. The bot queries Search Analytics with the `page` dimension and returns per-URL clicks for a property over a given date window
+  3. For each metric (impresiones, clics, CTR, posición media) the bot computes the week-over-week % variation of the current 7-day window vs the prior comparable 7-day window, with position inverted and divide-by-zero guarded
+  4. A property with no data / partial data over the window yields a clear "sin datos" result instead of an error or nonsense delta
+
+**Plans**: TBD
+
+### Phase 6: Weekly Client Report (Block Kit)
+
+**Goal**: Compose the weekly data layer into the per-client report — extend the existing Block Kit builder so each client's message shows traffic (impressions) and clicks WoW plus CTR and average position with weekly deltas, and appends the top 3 URLs that rose most and the top 3 that dropped most in clicks, all with readable number/URL formatting.
+**Mode:** mvp
+**Depends on**: Phase 5
+**Requirements**: RPT-07, RPT-08, RPT-09, RPT-10
+**Success Criteria** (what must be TRUE):
+
+  1. Each client's report shows tráfico (impresiones) and clics week-over-week plus CTR and posición media, each with its weekly delta and a direction indicator (inverted for position)
+  2. The report lists the top 3 URLs that rose the most in clicks week-over-week for that client
+  3. The report lists the top 3 URLs that dropped the most in clicks week-over-week for that client
+  4. Numbers and messages render readably in Block Kit (thousands separators, rounded percentages and position, trimmed/shortened URLs) without overflowing or breaking layout
+
+**Plans**: TBD
+
+### Phase 7: Per-Client Channel Routing + Roster
+
+**Goal**: Route each client's weekly report to its own Slack channel instead of a single shared channel — persist a client→channel map in Redis, expose a Slack command to set/update a client's destination channel, make the cron post each client's report to its mapped channel (skipping unmapped clients with a clear notice without breaking the run), and load the initial client roster.
+**Mode:** mvp
+**Depends on**: Phase 6
+**Requirements**: CH-01, CH-02, CH-03, CFG-01
+**Success Criteria** (what must be TRUE):
+
+  1. The bot persists a map of client (GSC property) → destination Slack channel in Redis that survives across serverless invocations
+  2. A Slack command sets or updates the destination channel for a given client, confirming the change
+  3. The weekly run posts each client's report to its mapped channel; a client with no channel assigned is skipped with a clear notice and the rest of the run continues uninterrupted
+  4. The initial roster (deltacloudz.com, felipevergara.co, childrenchic.com, fhcaorlando.com; nicmafia removed) is loaded as active clients
+
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -118,3 +173,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 2. Client Management | 3/3 | Complete   | 2026-06-25 |
 | 3. GSC Metrics + Delta Computation | 3/3 | Complete   | 2026-06-25 |
 | 4. Block Kit Report + Daily Cron | 3/3 | Complete (code; live e2e credential-gated) | 2026-06-26 |
+| 5. Weekly Window + Per-URL Metrics | 0/TBD | Not started | - |
+| 6. Weekly Client Report (Block Kit) | 0/TBD | Not started | - |
+| 7. Per-Client Channel Routing + Roster | 0/TBD | Not started | - |

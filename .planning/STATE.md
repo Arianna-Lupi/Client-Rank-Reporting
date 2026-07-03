@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Weekly Per-Client Reports
-status: planning
-last_updated: "2026-07-03T19:37:09.910Z"
+status: roadmap_ready
+last_updated: "2026-07-03T20:10:00.000Z"
 last_activity: 2026-07-03
 progress:
-  total_phases: 0
+  total_phases: 3
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -17,23 +17,23 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-06-25)
+See: .planning/PROJECT.md (updated 2026-07-03)
 
 **Core value:** Cada mañana el equipo ve, sin entrar a GSC, cómo se movió cada cliente día contra día directamente en Slack.
-**Current focus:** Phase 04 — Block Kit Report + Daily Cron
+**Current focus:** Milestone v1.1 — Phase 5 (Weekly Window + Per-URL Metrics), roadmap ready, awaiting `/gsd:plan-phase 5`
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 5 — Weekly Window + Per-URL Metrics (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-07-03 — Milestone v1.1 started
+Status: Roadmap ready — v1.1 phases 5-7 mapped, awaiting planning
+Last activity: 2026-07-03 — Milestone v1.1 roadmap created (Phases 5, 6, 7)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
+- Total plans completed: 0 (v1.1)
 - Average duration: — min
 - Total execution time: 0.0 hours
 
@@ -67,10 +67,12 @@ Recent decisions affecting current work:
 
 - HTTP endpoint instead of Socket Mode (serverless-compatible)
 - Service Account auth for GSC (unattended daily runs); base64-encode the whole SA JSON to avoid newline breakage on Vercel
-- Compare last available day vs previous (absorb 2-3 day GSC lag)
 - Upstash Redis for the active-client list (Vercel KV deprecated)
-- [Phase ?]: Pinned TypeScript to 5.x (not 6.x) for @vercel/node compatibility; vitest@^3.2.0
-- [Phase ?]: lib/config.ts getConfig() is the single fail-fast entry for sensitive env config (SCH-03)
+- lib/config.ts getConfig() is the single fail-fast entry for sensitive env config (SCH-03)
+- [v1.1] Comparación semana vs semana (7d vs 7d previos), ventana móvil anclada al último día con datos
+- [v1.1] 1 canal por cliente vía mapa en Redis (evita redeploy al cambiar canal)
+- [v1.1] "tráfico" = impresiones; CTR y posición media se mantienen, no se reemplazan
+- [v1.1] Extender el pipeline existente (cron diario + gsc.ts + delta core + Block Kit builder), no reconstruirlo
 
 ### Pending Todos
 
@@ -78,10 +80,10 @@ None yet.
 
 ### Blockers/Concerns
 
-- Vercel plan (Hobby vs Pro) affects cron precision — Hobby allows ~1 cron/day with ~1h imprecision; confirm before Phase 4 scheduling.
-- Exact GSC `googleapis` method/scope names (`searchconsole` vs `webmasters` v1) and `dataState` behavior were MEDIUM confidence — verify against installed package types early in Phase 3.
-- Bolt receiver vs raw Vercel handler — resolve in a Phase 1 spike (affects 3s-ack + signature wiring).
-- GSC SA email not yet granted on any GSC property (sites.list returns 0); Slack + Upstash creds still blank in .env.local — all required before Plan 03 preview deploy. **BLOCKING Plan 01-03 Task 2** (deploy + e2e verification of /list). The handler code (Task 1) is written, typechecked and committed; only the live deploy/seed/e2e remains, and it cannot proceed until these creds exist and the SA is granted on a property.
+- Vercel plan (Hobby vs Pro) affects cron precision — Hobby allows ~1 cron/day with ~1h imprecision. v1.1 keeps the hourly-cron-gated-by-REPORT_TZ pattern; confirm plan before scheduling changes.
+- GSC SA email not yet granted on any GSC property (sites.list returns 0); Slack + Upstash creds still blank in .env.local — required before any live e2e. Carried from v1.0 Plan 01-03 Task 2 (deploy + e2e of /list still blocked on creds).
+- Phase 7 channel routing changes the report destination model from single-channel (v1.0) to per-client; confirm the v1.0 single `REPORT_CHANNEL_ID` path is superseded, not left dangling.
+- childrenchic.com will be renamed to its new domain once Arianna confirms (affects CFG-01 roster seed).
 
 ## Deferred Items
 
@@ -89,10 +91,10 @@ Items acknowledged and carried forward from previous milestone close:
 
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
-| *(none)* | | | |
+| v1.0 e2e | Live deploy/seed/e2e of /list (Plan 01-03 Task 2) blocked on creds | Blocked | v1.0 |
 
 ## Session Continuity
 
-Last session: 2026-06-25T17:06:00.000Z
-Stopped at: Phase 03 complete: 03-01/02/03 plans executed, 72 tests green
-Resume file: None
+Last session: 2026-07-03T20:10:00.000Z
+Stopped at: Milestone v1.1 roadmap created — Phases 5 (GSC-05/06, RPT-05), 6 (RPT-07/08/09/10), 7 (CH-01/02/03, CFG-01). All 11 v1.1 requirements mapped.
+Resume file: None — next step is `/gsd:plan-phase 5`
