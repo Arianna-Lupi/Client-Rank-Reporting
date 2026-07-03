@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { fetchDailyMetrics, filterReadableSites } from './gsc.js';
+import { fetchDailyMetrics, fetchPageClicks, filterReadableSites } from './gsc.js';
 import type { GscQueryFn, RawAnalyticsRow } from './gsc.js';
 
 /**
@@ -141,5 +141,71 @@ describe('fetchDailyMetrics (GSC-03)', () => {
 
     expect(result).toHaveLength(1);
     expect(result[0]!.date).toBe('2026-06-19');
+  });
+});
+
+describe('fetchPageClicks (GSC-06)', () => {
+  it('queries dimensions:[page], dataState:final, rowLimit:250 with exact site + dates', async () => {
+    const { fn, calls } = mockQuery([]);
+
+    await fetchPageClicks('sc-domain:x.com', '2026-06-14', '2026-06-20', fn);
+
+    expect(calls).toHaveLength(1);
+    const params = calls[0]!;
+    expect(params.siteUrl).toBe('sc-domain:x.com');
+    expect(params.requestBody.dimensions).toEqual(['page']);
+    expect(params.requestBody.dataState).toBe('final');
+    expect(params.requestBody.rowLimit).toBe(250);
+    expect(params.requestBody.startDate).toBe('2026-06-14');
+    expect(params.requestBody.endDate).toBe('2026-06-20');
+  });
+
+  it('maps page rows to a URL -> clicks Map', async () => {
+    const { fn } = mockQuery([
+      { keys: ['https://x.com/a'], clicks: 40 },
+      { keys: ['https://x.com/b'], clicks: 12 },
+    ]);
+
+    const map = await fetchPageClicks('sc-domain:x.com', '2026-06-14', '2026-06-20', fn);
+
+    expect(map.size).toBe(2);
+    expect(map.get('https://x.com/a')).toBe(40);
+    expect(map.get('https://x.com/b')).toBe(12);
+  });
+
+  it('skips rows without a URL key', async () => {
+    const { fn } = mockQuery([{ clicks: 9 }, { keys: [], clicks: 5 }, { keys: ['https://x.com/a'], clicks: 7 }]);
+
+    const map = await fetchPageClicks('sc-domain:x.com', '2026-06-14', '2026-06-20', fn);
+
+    expect(map.size).toBe(1);
+    expect(map.get('https://x.com/a')).toBe(7);
+  });
+
+  it('null clicks coalesce to 0', async () => {
+    const { fn } = mockQuery([{ keys: ['https://x.com/a'] }]);
+
+    const map = await fetchPageClicks('sc-domain:x.com', '2026-06-14', '2026-06-20', fn);
+
+    expect(map.get('https://x.com/a')).toBe(0);
+  });
+
+  it('repeated URL across rows sums clicks defensively', async () => {
+    const { fn } = mockQuery([
+      { keys: ['https://x.com/a'], clicks: 10 },
+      { keys: ['https://x.com/a'], clicks: 5 },
+    ]);
+
+    const map = await fetchPageClicks('sc-domain:x.com', '2026-06-14', '2026-06-20', fn);
+
+    expect(map.get('https://x.com/a')).toBe(15);
+  });
+
+  it('null rows -> empty Map without throwing', async () => {
+    const { fn } = mockQuery(null);
+
+    const map = await fetchPageClicks('sc-domain:x.com', '2026-06-14', '2026-06-20', fn);
+
+    expect(map.size).toBe(0);
   });
 });
