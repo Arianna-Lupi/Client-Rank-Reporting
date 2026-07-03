@@ -120,7 +120,7 @@ function wMetric(overrides: Partial<MetricDelta>): MetricDelta {
 
 const WEEKLY_DELTAS: MetricDeltas = {
   impressions: wMetric({ value: 12345, previous: 10287, deltaPct: 20, improved: true }),
-  clicks: wMetric({ value: 1234, previous: 1341, deltaPct: -8, improved: false }),
+  clicks: wMetric({ value: 15678, previous: 17041, deltaPct: -8, improved: false }),
   ctr: wMetric({ value: 0.0324, previous: 0.0309, deltaPct: 5, improved: true }),
   position: wMetric({ value: 4.7, previous: 4.8, deltaPct: -3, improved: true }),
 };
@@ -178,7 +178,7 @@ describe('buildWeeklyClientReportBlocks', () => {
 
     // es-ES thousands separator on clicks and impressions.
     expect(json).toContain('12.345');
-    expect(json).toContain('1.234');
+    expect(json).toContain('15.678');
 
     // CTR with 2 decimals; position with 1 decimal.
     expect(json).toContain('3.24%');
@@ -199,10 +199,10 @@ describe('buildWeeklyClientReportBlocks', () => {
     expect(json).toContain('+100 clics');
     expect(json).toContain('−' + '70 clics');
 
-    // mrkdwn link with only the path, truncated to ~50 chars with an ellipsis.
+    // mrkdwn link: full URL as href, but the visible label is only the path,
+    // truncated to ~50 chars and closed with an ellipsis before the '>'.
     expect(json).toContain('<' + LONG_PATH_URL + '|/blog/');
-    // The full long path tail is NOT present (it was truncated).
-    expect(json).not.toContain('caracteres-facil');
+    expect(json).toContain('los-c…>'); // truncated label tail + ellipsis before '>'
   });
 
   it('renders ok with empty urls: no URL sections, a friendly context degradation line', () => {
