@@ -105,6 +105,7 @@ export type GscQueryFn = (params: {
     endDate: string;
     dimensions: string[];
     dataState: string;
+    rowLimit?: number; // optional -> non-breaking; fetchDailyMetrics never sets it
   };
 }) => Promise<{ data: { rows?: RawAnalyticsRow[] | null } }>;
 
@@ -159,4 +160,38 @@ export async function fetchDailyMetrics(
     })
     .filter((r): r is DailyMetricRow => r !== null)
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+}
+
+/**
+ * Fetch per-URL clicks for a property over an explicit date window (GSC-06).
+ *
+ * Uses the SAME `getSearchConsole()` client and `GSC_SA_KEY_B64` auth as the
+ * daily fetch. The window's start/end dates are already resolved by the caller
+ * (resolveWeeklyWindow, 05-01) — this function does no date arithmetic and never
+ * reads today's date. Queries dimensions:['page'] with dataState 'final' and
+ * rowLimit 250, then maps each row to keys[0] (the URL) -> clicks. Rows without a
+ * URL key are skipped, null clicks coalesce to 0, and a URL appearing in more
+ * than one row has its clicks summed (defensive). Returns an empty Map when GSC
+ * yields no rows. The googleapis call is isolated behind the injectable `query`
+ * param so the suite runs with a mock — no live API, no credentials.
+ */
+export async function fetchPageClicks(
+  siteUrl: string,
+  startDate: string,
+  endDate: string,
+  query: GscQueryFn = defaultQuery,
+): Promise<Map<string, number>> {
+  const res = await query({
+    siteUrl,
+    requestBody: { startDate, endDate, dimensions: ['page'], dataState: 'final', rowLimit: 250 },
+  });
+
+  const rows = res.data.rows ?? [];
+  const map = new Map<string, number>();
+  for (const r of rows) {
+    const url = r.keys?.[0];
+    if (url === undefined || url === '') continue;
+    map.set(url, (map.get(url) ?? 0) + (r.clicks ?? 0));
+  }
+  return map;
 }
