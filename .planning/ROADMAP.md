@@ -130,7 +130,12 @@ Plans:
   3. For each metric (impresiones, clics, CTR, posición media) the bot computes the week-over-week % variation of the current 7-day window vs the prior comparable 7-day window, with position inverted and divide-by-zero guarded
   4. A property with no data / partial data over the window yields a clear "sin datos" result instead of an error or nonsense delta
 
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+
+- [ ] 05-01-PLAN.md — lib/weekly.ts puro: resolveWeeklyWindow (GSC-05), aggregateWeek (SUM/CTR/posición ponderada), computeWeeklyDeltas (RPT-05, reuso de metrics.ts) y rankUrlClickDeltas per-URL (wave 1)
+- [ ] 05-02-PLAN.md — lib/gsc.ts fetchPageClicks: clics por URL vía dimensión page, rowLimit 250, dataState final, inyectable y testeado offline (GSC-06) (wave 1)
 
 ### Phase 6: Weekly Client Report (Block Kit)
 
@@ -173,6 +178,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Client Management | 3/3 | Complete   | 2026-06-25 |
 | 3. GSC Metrics + Delta Computation | 3/3 | Complete   | 2026-06-25 |
 | 4. Block Kit Report + Daily Cron | 3/3 | Complete (code; live e2e credential-gated) | 2026-06-26 |
-| 5. Weekly Window + Per-URL Metrics | 0/TBD | Not started | - |
+| 5. Weekly Window + Per-URL Metrics | 0/2 | Planned | - |
 | 6. Weekly Client Report (Block Kit) | 0/TBD | Not started | - |
 | 7. Per-Client Channel Routing + Roster | 0/TBD | Not started | - |
