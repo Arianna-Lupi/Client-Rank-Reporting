@@ -16,6 +16,7 @@ import { handleSetChannel } from './setchannel.js';
 import type { SetChannelDeps } from './setchannel.js';
 import { handleGetData } from './getdata.js';
 import type { GetDataDeps } from './getdata.js';
+import { handleHelp } from './help.js';
 
 export type CommandDeps = AddDeps & RemoveDeps & ListDeps & SetChannelDeps & GetDataDeps;
 
@@ -36,6 +37,8 @@ export async function dispatch(
       return handleSetChannel(arg, deps);
     case '/getdata':
       return handleGetData(arg, deps);
+    case '/help':
+      return handleHelp();
     default:
       return 'Comando no soportado.';
   }

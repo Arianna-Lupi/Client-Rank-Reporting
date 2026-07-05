@@ -85,6 +85,12 @@ describe('dispatch', () => {
     expect(posts).toEqual([]);
   });
 
+  it('routes /help to the help reply', async () => {
+    const reply = await dispatch('/help', '', deps());
+    expect(reply).toContain('comandos disponibles');
+    expect(reply).toContain('`/add <propiedad>`');
+  });
+
   it('returns the unsupported message for an unknown command', async () => {
     expect(await dispatch('/desconocido', '', deps())).toBe('Comando no soportado.');
   });
