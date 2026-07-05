@@ -24,7 +24,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ### Milestone v1.1 (Weekly Per-Client Reports)
 
-- [ ] **Phase 5: Weekly Window + Per-URL Metrics** - The weekly data layer: resolve last-7d-vs-prior-7d anchored to the last available GSC day, query per-URL clicks via the `page` dimension, and compute week-over-week % deltas
+- [x] **Phase 5: Weekly Window + Per-URL Metrics** - The weekly data layer: resolve last-7d-vs-prior-7d anchored to the last available GSC day, query per-URL clicks via the `page` dimension, and compute week-over-week % deltas (completed 2026-07-03)
 - [x] **Phase 6: Weekly Client Report (Block Kit)** - A per-client weekly Block Kit report showing traffic + clicks + CTR + position WoW plus the top 3 rising and top 3 dropping URLs by clicks, with readable number formatting (completed 2026-07-03)
 - [x] **Phase 7: Per-Client Channel Routing + Roster** - Each client's report posts to its own mapped Slack channel (Redis map, set by command); unmapped clients are skipped with a clear notice, and the initial roster is loaded (completed 2026-07-03)
 
@@ -134,8 +134,8 @@ Plans:
 
 Plans:
 
-- [ ] 05-01-PLAN.md — lib/weekly.ts puro: resolveWeeklyWindow (GSC-05), aggregateWeek (SUM/CTR/posición ponderada), computeWeeklyDeltas (RPT-05, reuso de metrics.ts) y rankUrlClickDeltas per-URL (wave 1)
-- [ ] 05-02-PLAN.md — lib/gsc.ts fetchPageClicks: clics por URL vía dimensión page, rowLimit 250, dataState final, inyectable y testeado offline (GSC-06) (wave 1)
+- [x] 05-01-PLAN.md — lib/weekly.ts puro: resolveWeeklyWindow (GSC-05), aggregateWeek (SUM/CTR/posición ponderada), computeWeeklyDeltas (RPT-05, reuso de metrics.ts) y rankUrlClickDeltas per-URL (wave 1)
+- [x] 05-02-PLAN.md — lib/gsc.ts fetchPageClicks: clics por URL vía dimensión page, rowLimit 250, dataState final, inyectable y testeado offline (GSC-06) (wave 1)
 
 ### Phase 6: Weekly Client Report (Block Kit)
 
@@ -183,6 +183,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Client Management | 3/3 | Complete   | 2026-06-25 |
 | 3. GSC Metrics + Delta Computation | 3/3 | Complete   | 2026-06-25 |
 | 4. Block Kit Report + Daily Cron | 3/3 | Complete (code; live e2e credential-gated) | 2026-06-26 |
-| 5. Weekly Window + Per-URL Metrics | 0/2 | Planned | - |
+| 5. Weekly Window + Per-URL Metrics | 2/2 | Complete   | 2026-07-03 |
 | 6. Weekly Client Report (Block Kit) | 2/2 | Complete   | 2026-07-03 |
 | 7. Per-Client Channel Routing + Roster | 3/3 | Complete   | 2026-07-03 |
