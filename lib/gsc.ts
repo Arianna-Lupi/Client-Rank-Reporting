@@ -50,13 +50,32 @@ export function filterReadableSites(
     .map((e) => ({ siteUrl: e.siteUrl, permissionLevel: e.permissionLevel }));
 }
 
-/** Build a GoogleAuth client from the base64-encoded Service Account JSON. */
-function getAuth(): InstanceType<typeof google.auth.GoogleAuth> {
+/**
+ * Build a GSC auth client from the base64-encoded Service Account JSON.
+ *
+ * When `GSC_IMPERSONATE_SUBJECT` is set, the Service Account impersonates that
+ * user via domain-wide delegation (JWT `subject`), so the bot inherits the
+ * GSC properties that user can read — used when properties cannot be shared
+ * with the SA directly but the SA's Workspace is authorized for DWD on the
+ * `webmasters.readonly` scope. When unset, falls back to plain SA auth.
+ */
+function getAuth():
+  | InstanceType<typeof google.auth.JWT>
+  | InstanceType<typeof google.auth.GoogleAuth> {
   const b64 = process.env.GSC_SA_KEY_B64 ?? '';
   const json = JSON.parse(Buffer.from(b64, 'base64').toString('utf8')) as {
     client_email: string;
     private_key: string;
   };
+  const subject = process.env.GSC_IMPERSONATE_SUBJECT?.trim();
+  if (subject) {
+    return new google.auth.JWT({
+      email: json.client_email,
+      key: json.private_key,
+      scopes: SCOPES,
+      subject,
+    });
+  }
   return new google.auth.GoogleAuth({
     credentials: { client_email: json.client_email, private_key: json.private_key },
     scopes: SCOPES,
